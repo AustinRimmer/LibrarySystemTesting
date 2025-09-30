@@ -17,5 +17,5 @@ public class Catalogue {
         return catalogue.get(index);
     }
 
-    public int getCatalogueSize(){return 0;}
+    public int getCatalogueSize(){return catalogue.size();}
 }
