@@ -33,5 +33,17 @@ public class LibraryTest {
         assertEquals("How to code in scheme",title3);
 
     }
+    @Test
+    @DisplayName("Check that 3 users are initialized")
+    void RESP_02_test_01(){
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userlist = initializeUserList.initializeUserList();
+
+        int numberOfUsers = userlist.getNumberOfUsers();
+
+        assertEquals(3, numberOfUsers);
+
+
+    }
 }
 
