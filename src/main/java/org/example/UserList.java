@@ -16,7 +16,7 @@ public class UserList {
         return userList.get(index);
     }
 
-    public int getNumberOfUsers(){return 0;}
+    public int getNumberOfUsers(){return userList.size();}
 
 
 }
