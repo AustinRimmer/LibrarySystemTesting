@@ -14,8 +14,35 @@ public class Library {
     }
     public static Boolean initializeSessionHolder(Scanner userInput, UserIOHandler uiHandler, UserList userList){
 
+        String tempUsername = "";
+        String tempPassword = "";
 
-        return false;
+        boolean validUser = false;
+        boolean validPass = false;
+
+        while (!validUser || !validPass){
+            User currentUserLogin = uiHandler.getUserLogin(userInput);
+
+            validUser = false;
+            validPass = false;
+            if(Validator.validateUsername(currentUserLogin.getUsername(),userList)) {
+                validUser = true;
+            }
+            if(Validator.validatePassword(currentUserLogin.getPassword())){
+                validPass = true;
+
+            }
+            if(validPass && validUser){
+                tempUsername = currentUserLogin.getUsername();
+                tempPassword = currentUserLogin.getPassword();
+                break;
+            }
+        }
+        sessionOwner = new User(tempUsername,tempPassword);
+
+        userList.addUser(sessionOwner);
+        System.out.println("User Validated: welcome...");
+        return true;
     }
 
     public User getCurrentSessionHolder(){
