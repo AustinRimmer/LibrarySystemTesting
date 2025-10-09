@@ -27,10 +27,21 @@ public class User {
 
     public ArrayList<Integer> getHeldBookAvailability(){
         ArrayList<Integer> heldBookAvailabilities = new ArrayList<>();
-        heldBookAvailabilities.add(-3);
+        if(booksOnHold.isEmpty()){
+            heldBookAvailabilities.add(-2);
+            //-2 meaning no holds
+            return heldBookAvailabilities;
+        }
+        for(int i = 0; i < booksOnHold.size(); i ++){
+            if(booksOnHold.get(i).getAvailablity() == -1 && booksOnHold.get(i).getHolder(0).equals(this.username)){
+                heldBookAvailabilities.add(1);
+            }
+            else{
+                heldBookAvailabilities.add(booksOnHold.get(i).getAvailablity());
+            }
 
-
-        return  heldBookAvailabilities;
+        }
+        return heldBookAvailabilities;
     }
 
 }
