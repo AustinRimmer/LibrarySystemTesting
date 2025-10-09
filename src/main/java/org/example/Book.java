@@ -18,7 +18,7 @@ public class Book {
     public String getAuthor(){return author;}
 
     public void addUserToHoldQueue(String username){
-        holdQueue.add("default");
+        holdQueue.add(username);
     }
 
     public String getHolder(int i) {
