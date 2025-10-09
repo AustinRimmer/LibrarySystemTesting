@@ -45,5 +45,51 @@ public class LibraryTest {
 
 
     }
+
+    @Test
+    @DisplayName("Ensure that all pre initialized users have valid usernames and passwords")
+    void RESP_03_test_01(){
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        boolean user1ValidUser = Validator.validateUsername(userList.getUser(0).getUsername(),userList);
+        boolean user2ValidUser = Validator.validateUsername(userList.getUser(1).getUsername(),userList);
+        boolean user3ValidUser = Validator.validateUsername(userList.getUser(2).getUsername(), userList);
+
+
+        boolean user1ValidPass = Validator.validatePassword(userList.getUser(0).getPassword());
+        boolean user2ValidPass = Validator.validatePassword(userList.getUser(1).getPassword());
+        boolean user3ValidPass = Validator.validatePassword(userList.getUser(2).getPassword());
+
+
+        assertEquals(false, user1ValidUser);
+        assertEquals(false, user2ValidUser);
+        assertEquals(false, user3ValidUser);
+        //need to be false since users are already initalized at start of test,
+        //thus comparing their username string and checking if valid will always
+        //be false since its technically a duplicate
+        assertEquals(true, user1ValidPass);
+        assertEquals(true, user2ValidPass);
+        assertEquals(true, user3ValidPass);
+
+
+    }
+    @Test
+    @DisplayName("Boundary Testing acceptable passwords")
+    void RESP_03_test_02(){
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        boolean tooShort = Validator.validatePassword("12@a");
+        boolean noNumbers = Validator.validatePassword("ab@aazay");
+        boolean noSpecial = Validator.validatePassword("ab1aazay");
+        boolean noLetters = Validator.validatePassword("12@12345");
+
+
+        boolean justRight = Validator.validatePassword("p@55w0rd");
+        assertEquals(false,tooShort);
+        assertEquals(false,noNumbers);
+        assertEquals(false,noSpecial);
+        assertEquals(false,noLetters);
+        assertEquals(true,justRight);
+    }
 }
 
