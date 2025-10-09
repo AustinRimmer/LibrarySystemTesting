@@ -26,6 +26,15 @@ public class UserIOHandler {
         return password;
     }
     void dispUserHolds(User user){
-        System.out.println("MUHAHAHA");
+        ArrayList<Integer> userBookAvails = user.getHeldBookAvailability();
+        if(userBookAvails.get(0) == -3){
+            System.out.println("No User Holds");
+        }
+        for(int i = 0; i < userBookAvails.size(); i++){
+            if(userBookAvails.get(i) == 1 || (userBookAvails.get(i) == -1 && user.getUsername().equals(user.getBooksOnHold().get(i).getHolder(0))) ){
+                System.out.println("<=====------<NOTIFICATION>------=====>");
+                System.out.println("The book: " + user.getBooksOnHold().get(i).getTitle() +"\n" + "By: " + user.getBooksOnHold().get(i).getAuthor() + "\nIs now available...");
+            }
+        }
     }
 }
