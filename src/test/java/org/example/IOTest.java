@@ -88,5 +88,31 @@ public class IOTest {
 
 
     }
+    @Test
+    @DisplayName("Checking if a valid entered user session is established (tests both io and method return)")
+    void RESP_04_test_01(){
+        Library library = new Library();
+        String SimUserIn = "austinrimmer\np@55w0rd\n";
+        User expectedSessionUser = new User("austinrimmer","p@55w0rd");
+        User actualSessionHolder = new User("","");
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        boolean userSessionSucessfullyInititated = library.initializeSessionHolder(userInput,uiHandler,userList);
+        actualSessionHolder = library.getCurrentSessionHolder();
+        //checking to see if actual user matches expected
+        assertEquals(expectedSessionUser.getUsername(),actualSessionHolder.getUsername());
+        assertEquals(expectedSessionUser.getPassword(),actualSessionHolder.getPassword());
+        //checking for validation boolean return
+        assertEquals(true, userSessionSucessfullyInititated);
+
+        //note im only going to test once as the user input prompt is going to be a while loop using my validate password and username methods
+        //and will only exit once both are valid
+        //I cant test that without using a mock which is not allowed per assignment rules
+    }
 }
+
 
