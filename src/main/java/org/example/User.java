@@ -24,4 +24,13 @@ public class User {
         return booksOnHold;
     }
 
+
+    public ArrayList<Integer> getHeldBookAvailability(){
+        ArrayList<Integer> heldBookAvailabilities = new ArrayList<>();
+        heldBookAvailabilities.add(-3);
+
+
+        return  heldBookAvailabilities;
+    }
+
 }

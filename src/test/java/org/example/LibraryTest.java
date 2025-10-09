@@ -2,6 +2,9 @@ package org.example;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 public class LibraryTest {
     @Test
@@ -134,6 +137,95 @@ public class LibraryTest {
 
         assertEquals(userList.getUser(1).getUsername(), catalogue.getBook(0).getHolder(0));
         assertEquals(userList.getUser(2).getUsername(), catalogue.getBook(0).getHolder(1));
+    }
+    @Test
+    @DisplayName("Fetching user holds availability when book is on hold but current user is the first is the hold queue (should show as available)")
+    void RESP_06_test_01(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+
+
+        userList.getUser(1).addBookToOnHoldBooks(catalogue.getBook(0));
+        userList.getUser(2).addBookToOnHoldBooks(catalogue.getBook(0));
+        ArrayList<Integer> testAvail = userList.getUser(1).getHeldBookAvailability();
+        assertEquals(1,testAvail.get(0));
+    }
+    @Test
+    @DisplayName("Fetching user holds availability on unavailable books")
+    void RESP_06_test_02(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+
+        catalogue.getBook(0).setAvailablity(0);
+        catalogue.getBook(1).setAvailablity(0);
+        userList.getUser(1).addBookToOnHoldBooks(catalogue.getBook(0));
+        userList.getUser(1).addBookToOnHoldBooks(catalogue.getBook(1));
+        ArrayList<Integer> testAvail = userList.getUser(1).getHeldBookAvailability();
+        assertEquals(0,testAvail.get(0));
+        assertEquals(0,testAvail.get(1));
+    }
+    @Test
+    @DisplayName("Fetching user holds availability on available books (wouldnt happen in normal use) since book would always be on hold they would just be first)")
+    void RESP_06_test_03(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+
+        catalogue.getBook(0).setAvailablity(1);
+        catalogue.getBook(1).setAvailablity(1);
+        userList.getUser(1).addBookToOnHoldBooks(catalogue.getBook(0));
+        userList.getUser(1).addBookToOnHoldBooks(catalogue.getBook(1));
+        ArrayList<Integer> testAvail = userList.getUser(1).getHeldBookAvailability();
+        assertEquals(1,testAvail.get(0));
+        assertEquals(1,testAvail.get(1));
+    }
+    @Test
+    @DisplayName("Fetching user holds availability on assortment of different book availabilities")
+    void RESP_06_test_04(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+
+        catalogue.getBook(0).setAvailablity(0);
+        catalogue.getBook(1).setAvailablity(1);
+        catalogue.getBook(2).setAvailablity(-1);
+        catalogue.getBook(3).setAvailablity(-1);
+        userList.getUser(1).addBookToOnHoldBooks(catalogue.getBook(0));
+        userList.getUser(1).addBookToOnHoldBooks(catalogue.getBook(1));
+
+        //user is first in hold queue
+        userList.getUser(1).addBookToOnHoldBooks(catalogue.getBook(2));
+        //user isnt first in hold queue
+        userList.getUser(2).addBookToOnHoldBooks(catalogue.getBook(3));
+        userList.getUser(1).addBookToOnHoldBooks(catalogue.getBook(3));
+        ArrayList<Integer> testAvail = userList.getUser(1).getHeldBookAvailability();
+        assertEquals(0,testAvail.get(0));
+        assertEquals(1,testAvail.get(1));
+        assertEquals(1,testAvail.get(2));
+        assertEquals(-1,testAvail.get(3));
+    }
+    @Test
+    @DisplayName("Fetching user holds availability when they have no held books")
+    void RESP_06_test_05(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+
+
+        ArrayList<Integer> testAvail = userList.getUser(1).getHeldBookAvailability();
+        assertEquals(-2,testAvail.get(0));
     }
 }
 

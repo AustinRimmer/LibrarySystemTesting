@@ -5,7 +5,7 @@ import java.util.LinkedList;
 public class Book {
     String title;
     String author;
-    int available = 1;
+    int availablity = 1;
     // 1 = available
     // 0 = checked out
     //-1 = on hold
@@ -24,4 +24,8 @@ public class Book {
     public String getHolder(int i) {
         return holdQueue.get(i);
     }
+
+    public void setAvailablity(int i){availablity = i;}
+
+    public int getAvailablity(){return availablity;}
 }
