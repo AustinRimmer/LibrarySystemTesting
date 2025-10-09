@@ -113,6 +113,96 @@ public class IOTest {
         //and will only exit once both are valid
         //I cant test that without using a mock which is not allowed per assignment rules
     }
+    @Test
+    @DisplayName("Testing display of available books that are held by the user for 1 available held book")
+    void RESP_07_01(){
+        //"NOTIFICATION: \n" + "The book: The Miscellaneous Mis-adventures of Captain Borqueefious\n" + "By: Dennis Bartholomew III\n" + "is now available \n";
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        String SimUserIn = "austinrimmer\np@55w0rd\n";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+
+
+        User user = userList.getUser(1);
+        user.addBookToOnHoldBooks(catalogue.getBook(0));
+        uiHandler.dispUserHolds(user);
+        String expectedOut = "<=====------<NOTIFICATION>------=====>" + System.lineSeparator() +
+                "The book: The Miscellaneous Mis-adventures of Captain Borqueefious\n" + "By: Dennis Bartholomew III\n" + "Is now available..." + System.lineSeparator();
+        assertEquals(expectedOut, systemOutStream.toString());
+
+    }
+    @Test
+    @DisplayName("Testing display of available books that are held by the user for 1 held book that is on hold by a different user")
+    void RESP_07_02(){
+        //"NOTIFICATION: \n" + "The book: The Miscellaneous Mis-adventures of Captain Borqueefious\n" + "By: Dennis Bartholomew III\n" + "is now available \n";
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        String SimUserIn = "";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        catalogue.getBook(0).setAvailablity(-1);
+
+        User user = userList.getUser(1);
+        userList.getUser(2).addBookToOnHoldBooks(catalogue.getBook(0));
+        user.addBookToOnHoldBooks(catalogue.getBook(0));
+        uiHandler.dispUserHolds(user);
+        String expectedOut = "";
+        assertEquals(expectedOut, systemOutStream.toString());
+
+    }
+    @Test
+    @DisplayName("Testing display of unavailable book ")
+    void RESP_07_03(){
+        //"NOTIFICATION: \n" + "The book: The Miscellaneous Mis-adventures of Captain Borqueefious\n" + "By: Dennis Bartholomew III\n" + "is now available \n";
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        String SimUserIn = "";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+
+        catalogue.getBook(0).setAvailablity(0);
+        User user = userList.getUser(1);
+        user.addBookToOnHoldBooks(catalogue.getBook(0));
+        uiHandler.dispUserHolds(user);
+        String expectedOut = "";
+        assertEquals(expectedOut, systemOutStream.toString());
+
+    }
+    @Test
+    @DisplayName("Boundary testing display of multiple available books that are held by the user that are available")
+    void RESP_07_04(){
+        //"NOTIFICATION: \n" + "The book: The Miscellaneous Mis-adventures of Captain Borqueefious\n" + "By: Dennis Bartholomew III\n" + "is now available \n";
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        String SimUserIn = "austinrimmer\np@55w0rd\n";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+
+
+        User user = userList.getUser(1);
+        user.addBookToOnHoldBooks(catalogue.getBook(0));
+        user.addBookToOnHoldBooks(catalogue.getBook(9));
+        user.addBookToOnHoldBooks(catalogue.getBook(19));
+        uiHandler.dispUserHolds(user);
+        String expectedOut = "<=====------<NOTIFICATION>------=====>" + System.lineSeparator() +
+                "The book: The Miscellaneous Mis-adventures of Captain Borqueefious\n" + "By: Dennis Bartholomew III\n" + "Is now available..." + System.lineSeparator() + "<=====------<NOTIFICATION>------=====>" + System.lineSeparator() +
+                "The book: The Murderizing Mutilator Strikes back\n" + "By: Stephan Queen\n" + "Is now available..." + System.lineSeparator() + "<=====------<NOTIFICATION>------=====>" + System.lineSeparator() +
+                "The book: How to code in scheme\n" + "By: Lord Sean Benjamin XII\n" + "Is now available..." + System.lineSeparator();
+        assertEquals(expectedOut, systemOutStream.toString());
+
+    }
+
 }
 
 

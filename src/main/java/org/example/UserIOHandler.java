@@ -25,4 +25,7 @@ public class UserIOHandler {
         String password = usrIn.nextLine();
         return password;
     }
+    void dispUserHolds(User user){
+        System.out.println("MUHAHAHA");
+    }
 }
