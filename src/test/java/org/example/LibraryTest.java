@@ -91,5 +91,52 @@ public class LibraryTest {
         assertEquals(false,noLetters);
         assertEquals(true,justRight);
     }
+    @Test
+    @DisplayName("Testing adding a book to hold")
+    void RESP_05_test_01(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        userList.getUser(0).addBookToOnHoldBooks(catalogue.getBook(0));
+
+        assertEquals(userList.getUser(0).getUsername(), catalogue.getBook(0).getHolder(0));
+    }
+    @Test
+    @DisplayName("Testing multiple holds by same user")
+    void RESP_05_test_02(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        userList.getUser(0).addBookToOnHoldBooks(catalogue.getBook(0));
+        userList.getUser(0).addBookToOnHoldBooks(catalogue.getBook(1));
+        userList.getUser(0).addBookToOnHoldBooks(catalogue.getBook(2));
+
+        assertEquals(userList.getUser(0).getUsername(), catalogue.getBook(0).getHolder(0));
+        assertEquals(userList.getUser(0).getUsername(), catalogue.getBook(1).getHolder(0));
+        assertEquals(userList.getUser(0).getUsername(), catalogue.getBook(2).getHolder(0));
+    }
+    @Test
+    @DisplayName("Testing multiple users with same held book/multiple borrows by same user")
+    void RESP_05_test_03(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+
+
+        userList.getUser(1).addBookToOnHoldBooks(catalogue.getBook(0));
+        userList.getUser(2).addBookToOnHoldBooks(catalogue.getBook(0));
+
+        assertEquals(userList.getUser(1).getUsername(), catalogue.getBook(0).getHolder(0));
+        assertEquals(userList.getUser(2).getUsername(), catalogue.getBook(0).getHolder(1));
+    }
 }
+
+
+
 
