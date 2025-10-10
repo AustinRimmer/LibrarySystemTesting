@@ -3,13 +3,14 @@ package org.example;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Book {
     String title;
     String author;
     int availablity = 1;
-    String dueDate = "";
+    String dueDate = "NOT CHECKED OUT";
     // 1 = available
     // 0 = checked out
     //-1 = on hold
@@ -35,7 +36,10 @@ public class Book {
     public int getAvailablity(){return availablity;}
 
     public void calculateDueDate(){
-        dueDate = "NOT IMPLEMENTED";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime due = currentDateTime.plusDays(14);
+        dueDate = due.format(formatter);
     }
 
     public String getDueDate() {
