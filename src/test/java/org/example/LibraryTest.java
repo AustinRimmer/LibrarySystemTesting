@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static org.junit.jupiter.api.Assertions.*;
 public class LibraryTest {
     @Test
@@ -227,6 +230,30 @@ public class LibraryTest {
         ArrayList<Integer> testAvail = userList.getUser(1).getHeldBookAvailability();
         assertEquals(-2,testAvail.get(0));
     }
+    @Test
+    @DisplayName("Fetching book due dates when not updating due date")
+    void RESP_09_test_01(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        String testDueDate = catalogue.getBook(0).getDueDate();
+        String expectedDueDate = "NOT CHECKED OUT";
+        assertEquals(expectedDueDate,testDueDate);
+    }
+    @Test
+    @DisplayName("Fetching book due dates when updating due date")
+    void RESP_09_test_02(){
+        //for ease of testing and since i want less headaches, im just always going to test the current system date
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        //this is the line im planning to call once borrowing is implemented
+        catalogue.getBook(0).calculateDueDate();
+        String testDueDate = catalogue.getBook(0).getDueDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String expectedDueDate = currentDate.plusDays(14).format(formatter);
+        assertEquals(expectedDueDate,testDueDate);
+    }
+
 }
 
 

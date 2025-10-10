@@ -1,11 +1,15 @@
 package org.example;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
+
 
 public class Book {
     String title;
     String author;
     int availablity = 1;
+    String dueDate = "";
     // 1 = available
     // 0 = checked out
     //-1 = on hold
@@ -25,7 +29,16 @@ public class Book {
         return holdQueue.get(i);
     }
 
+
     public void setAvailablity(int i){availablity = i;}
 
     public int getAvailablity(){return availablity;}
+
+    public void calculateDueDate(){
+        dueDate = "NOT IMPLEMENTED";
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
 }
