@@ -50,8 +50,19 @@ public class Library {
     }
 
     public static int systemOperationInPrompt(Scanner userInput, UserIOHandler uiHandler, UserList userList) {
+        String userChoice = "";
+        boolean validChoice = false;
+        while (!validChoice) {
+            userChoice = uiHandler.reqSystemOperation(userInput);
 
-        return -1;
+            if (Validator.validateUserOperationChoice(userChoice)) {
+                validChoice = true;
+                break;
+            } else {
+                System.out.println("invalid selection please try again...");
+            }
+        }
+        return Integer.parseInt(userChoice);
     }
 
 }
