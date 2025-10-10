@@ -49,5 +49,9 @@ public class Library {
         return sessionOwner;
     }
 
+    public static int systemOperationInPrompt(Scanner userInput, UserIOHandler uiHandler, UserList userList) {
+
+        return -1;
+    }
 
 }

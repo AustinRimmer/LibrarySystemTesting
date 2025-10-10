@@ -44,5 +44,12 @@ public class Validator {
         return hasLetter && hasNumber && hasSpecialChar;
     }
 
+    public static boolean validateUserOperationChoice(String userInput){
+        if(userInput.equals("1") || userInput.equals("2") || userInput.equals("3")){
+            return true;
+        }
+        return false;
+    }
+
 
 }

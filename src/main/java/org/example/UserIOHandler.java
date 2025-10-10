@@ -37,4 +37,12 @@ public class UserIOHandler {
             }
         }
     }
+    String reqSystemOperation(Scanner usrIn){
+        System.out.println("-----:=|{[SYSTEM OPERATIONS]}|=:------");
+        System.out.println("(1) borrow a book");
+        System.out.println("(2) return a book");
+        System.out.println("(3) logout");
+        System.out.println("<=====------------<>------------=====>");
+        return usrIn.nextLine();
+    }
 }

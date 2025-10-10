@@ -202,6 +202,96 @@ public class IOTest {
         assertEquals(expectedOut, systemOutStream.toString());
 
     }
+    @Test
+    @DisplayName("Testing user system operation prompt msg for valid choice")
+    void RESP_09_test_01(){
+        String SimUserIn = "1";
+        User expectedSessionUser = new User("austinrimmer","p@55w0rd");
+        int returnedInt = 0;
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+
+        returnedInt = Library.systemOperationInPrompt(userInput,uiHandler,userList);
+
+        //checking for validation boolean return
+        assertEquals( "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() ,systemOutStream.toString());
+    }
+    @Test
+    @DisplayName("Testing that systemOperationPrompt returns user choice correctly")
+    void RESP_09_test_05(){
+        String SimUserIn = "3";
+        User expectedSessionUser = new User("austinrimmer","p@55w0rd");
+        int returnedInt = 0;
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+
+        returnedInt = Library.systemOperationInPrompt(userInput,uiHandler,userList);
+
+        //checking for validation boolean return
+        assertEquals(returnedInt, 3);
+    }
+    @Test
+    @DisplayName("Testing user system operation prompt msg for invalid choices ending with valid (to exit while loop and be able to test)")
+    void RESP_09_test_02(){
+
+        String SimUserIn = "a\n a\n@\n4\n1";
+        User expectedSessionUser = new User("austinrimmer","p@55w0rd");
+        int returnedInt = 0;
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+
+        returnedInt = Library.systemOperationInPrompt(userInput,uiHandler,userList);
+
+        //checking for validation boolean return
+        assertEquals( "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() + "invalid selection please try again..." + System.lineSeparator() + "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() + "invalid selection please try again..." + System.lineSeparator() + "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() + "invalid selection please try again..." + System.lineSeparator() + "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() + "invalid selection please try again..." + System.lineSeparator() + "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() ,systemOutStream.toString());
+    }
+    @Test
+    @DisplayName("Boundary Testing user system operation prompt msg for valid choice 2 ")
+    void RESP_09_test_03(){
+        String SimUserIn = "2";
+        User expectedSessionUser = new User("austinrimmer","p@55w0rd");
+        int returnedInt = 0;
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+
+        returnedInt = Library.systemOperationInPrompt(userInput,uiHandler,userList);
+
+        //checking for validation boolean return
+        assertEquals( "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() ,systemOutStream.toString());
+    }
+    @Test
+    @DisplayName("Boundary Testing user system operation prompt msg for valid choice 3 ")
+    void RESP_09_test_04(){
+
+        String SimUserIn = "3";
+        User expectedSessionUser = new User("austinrimmer","p@55w0rd");
+        int returnedInt = 0;
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+
+        returnedInt = Library.systemOperationInPrompt(userInput,uiHandler,userList);
+
+        //checking for validation boolean return
+        assertEquals( "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() ,systemOutStream.toString());
+    }
 
 }
 
