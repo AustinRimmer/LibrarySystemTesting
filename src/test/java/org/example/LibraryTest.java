@@ -3,10 +3,12 @@ package org.example;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 public class LibraryTest {
@@ -252,6 +254,27 @@ public class LibraryTest {
         LocalDateTime currentDate = LocalDateTime.now();
         String expectedDueDate = currentDate.plusDays(14).format(formatter);
         assertEquals(expectedDueDate,testDueDate);
+    }
+    @Test
+    @DisplayName("Testing borrow updating book due date")
+    void RESP_10_test_09(){
+
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        String SimUserIn = "Y";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        User user = userList.getUser(0);
+        Book book = catalogue.getBook(0);
+
+        int testBorrow = user.borrowBook(book, userInput);
+        String testDueDate = catalogue.getBook(0).getDueDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String expectedDueDate = currentDate.plusDays(14).format(formatter);
+
+        assertEquals(testDueDate, book.getDueDate());
     }
 
 }

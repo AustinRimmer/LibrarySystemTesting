@@ -1,6 +1,9 @@
 package org.example;
 
+import java.util.Scanner;
+
 public class Validator {
+
     public static boolean validateUsername(String username, UserList userList) {
         for (int i = 0; i < userList.getNumberOfUsers(); i++) {
             if (username.equals(userList.getUser(i).getUsername())) {
@@ -14,6 +17,7 @@ public class Validator {
         }
         return username.matches("[a-zA-Z]+");
     }
+
     public static boolean validatePassword(String password) {
         //must be > 4 chars, must have one special char, one number, and at least 1 letter
         boolean hasSpecialChar = false;
@@ -50,6 +54,22 @@ public class Validator {
         }
         return false;
     }
-
-
+    //1     = can borrow
+    //0     = can place hold
+    //-1    = cant place hold
+    public static int validateBorrow(Book book, User user, Scanner userInput){
+        return -10;
+    }
+    //1 = yes
+    //0 = no
+    public static int validateHoldChoice(Book book, User user, Scanner userInput){
+        UserIOHandler uiHandler = new UserIOHandler(userInput);
+        String userResp = uiHandler.reqHoldChoice(userInput);
+        if(userResp.equals("Y")){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
 }

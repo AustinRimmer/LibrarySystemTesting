@@ -292,6 +292,153 @@ public class IOTest {
         assertEquals( "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() ,systemOutStream.toString());
     }
+    @Test
+    @DisplayName("Testing borrow validation result on available book")
+    void RESP_10_test_01(){
+
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        String SimUserIn = "Y";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        catalogue.getBook(0).setAvailablity(1);
+        User user = userList.getUser(1);
+        int testBorrow = user.borrowBook(catalogue.getBook(0),userInput);
+        assertEquals(1, testBorrow);
+    }
+    @Test
+    @DisplayName("Testing borrow recording on available book")
+    void RESP_10_test_02(){
+
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        String SimUserIn = "Y";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        catalogue.getBook(0).setAvailablity(1);
+        User user = userList.getUser(1);
+        int testBorrow = user.borrowBook(catalogue.getBook(0),userInput);
+        assertEquals(catalogue.getBook(0), user.getBorrowedBook(0));
+        assertEquals(0, catalogue.getBook(0).getAvailablity());
+        assertEquals(1, testBorrow);
+    }
+    @Test
+    @DisplayName("Testing borrow validation result on unavailable book")
+    void RESP_10_test_03(){
+
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        String SimUserIn = "Y";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        catalogue.getBook(0).setAvailablity(0);
+        User user = userList.getUser(1);
+        int testBorrow = user.borrowBook(catalogue.getBook(0),userInput);
+        assertEquals(0, testBorrow);
+    }
+    @Test
+    @DisplayName("Testing borrow validation user Interaction choice on unavailable book and then checking user holds")
+    void RESP_10_test_04(){
+
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        String SimUserIn = "N";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        catalogue.getBook(0).setAvailablity(0);
+        User user = userList.getUser(1);
+
+        int testBorrow = user.borrowBook(catalogue.getBook(0),userInput);
+
+        assertEquals(-1, testBorrow);
+        assertEquals(0,user.getBooksOnHold().size());
+    }
+
+    @Test
+    @DisplayName("Boundary testing borrow validation result on onHold book when current user isnt already in queue")
+    void RESP_10_test_05(){
+
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        userList.getUser(0).addBookToOnHoldBooks(catalogue.getBook(0));
+        catalogue.getBook(0).setAvailablity(-1);
+
+        String SimUserIn = "Y";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        User user = userList.getUser(1);
+        int testBorrow = user.borrowBook(catalogue.getBook(0), userInput);
+        assertEquals(0, testBorrow);
+    }
+    @Test
+    @DisplayName("Boundary testing borrow validation result on onHold book when current user isnt already in queue")
+    void RESP_10_test_06(){
+
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        userList.getUser(0).addBookToOnHoldBooks(catalogue.getBook(0));
+        catalogue.getBook(0).setAvailablity(-1);
+
+        String SimUserIn = "Y";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        User user = userList.getUser(1);
+        int testBorrow = user.borrowBook(catalogue.getBook(0), userInput);
+        assertEquals(0, testBorrow);
+    }
+    @Test
+    @DisplayName("Boundary testing borrow validation result on already borrowed book")
+    void RESP_10_test_07(){
+
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        String SimUserIn = "Y";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        User user = userList.getUser(0);
+        Book book = catalogue.getBook(0);
+
+        book.setAvailablity(1);
+        user.borrowBook(book, userInput);
+
+        int testBorrow = user.borrowBook(book, userInput); // second attempt
+        assertEquals(-1, testBorrow);
+    }
+    @Test
+    @DisplayName("Boundary testing borrow validation result on already held book when user is first in queue")
+    void RESP_10_test_08(){
+
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        String SimUserIn = "Y";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        User user = userList.getUser(0);
+        Book book = catalogue.getBook(0);
+
+        book.setAvailablity(-1);
+        book.addUserToHoldQueue(user.getUsername());
+        int testBorrow = user.borrowBook(book, userInput);
+
+        assertEquals(1, testBorrow);
+    }
 
 }
 

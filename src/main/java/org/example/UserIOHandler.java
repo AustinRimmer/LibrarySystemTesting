@@ -9,6 +9,10 @@ public class UserIOHandler {
         this.inputScanner = userInput;
         this.userList = userList;
     }
+    UserIOHandler(Scanner userInput){
+        this.inputScanner = userInput;
+    }
+
     User getUserLogin(Scanner usrIn){
         String username = reqUsername(usrIn);
         String password = reqPassword(usrIn);
@@ -18,7 +22,10 @@ public class UserIOHandler {
         System.out.println("Enter username:");
         String username = usrIn.nextLine();
         return username;
-
+    }
+    String reqHoldChoice(Scanner usrIn){
+        String choice = usrIn.nextLine();
+        return choice;
     }
     String reqPassword(Scanner usrIn){
         System.out.println("Enter password");
