@@ -52,7 +52,7 @@ public class UserIOHandler {
         return usrIn.nextLine();
     }
     public void dispNumBorrowedBooks(User user){
-        System.out.println("");
+        System.out.println("[NUMBER OF BORROWED BOOKS " + user.getNumberOfBorrowedBooks() +"]");
     }
 
 }
