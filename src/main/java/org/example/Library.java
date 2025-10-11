@@ -68,8 +68,27 @@ public class Library {
     public static void borrowState(UserIOHandler userIOHandler, User user, Catalogue catalogue, Scanner userInput){
         userIOHandler.dispNumBorrowedBooks(user);
 
+        while (true) {
+            userIOHandler.dispAllBooks(catalogue, user);
+            int borrowSelection = userIOHandler.getBorrowSelection(userInput);
+
+            if (borrowSelection == -1) {
+                System.out.println("Invalid selection please try again...");
+                continue; // go back to selection
+            }
+
+            Book selectedBook = catalogue.getBook(borrowSelection - 1);
+            userIOHandler.dispBook(selectedBook);
+
+            int borrowConfirm = userIOHandler.reqBorrowConfirm(userInput);
+            if (borrowConfirm == -1) {
+                continue;
+            }
 
 
+
+            break;
+        }
 
     }
 
