@@ -55,4 +55,8 @@ public class UserIOHandler {
         System.out.println("[NUMBER OF BORROWED BOOKS " + user.getNumberOfBorrowedBooks() +"]");
     }
 
+    void dispAllBooks(Catalogue catalogue, User user) {
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAA");
+    }
+
 }
