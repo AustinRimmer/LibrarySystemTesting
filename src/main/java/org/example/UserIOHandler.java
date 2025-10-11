@@ -56,7 +56,27 @@ public class UserIOHandler {
     }
 
     void dispAllBooks(Catalogue catalogue, User user) {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAA");
+        String availabilityString = "";
+        System.out.println("");
+        System.out.println("_------:=|{[BOOK SELECTION]}|=:------_");
+        for (int i = 0; i < catalogue.getCatalogueSize(); i++) {
+            System.out.println("(" + (i + 1) + ")");
+            System.out.println("Title: " + catalogue.getBook(i).getTitle());
+            System.out.println("Author: " + catalogue.getBook(i).getAuthor());
+
+            if (catalogue.getBook(i).getAvailablity() == 1) {
+                availabilityString = "Available";
+            }
+            if (catalogue.getBook(i).getAvailablity() == 0) {
+                availabilityString = "Checked Out";
+            }
+            if (catalogue.getBook(i).getAvailablity() == -1) {
+                availabilityString = "On Hold";
+            }
+
+            System.out.println("Status: {" + availabilityString + "}");
+            System.out.println("<=====------------<>------------=====>");
+        }
     }
 
 }
