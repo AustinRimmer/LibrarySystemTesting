@@ -58,6 +58,72 @@ public class Validator {
     //0     = can place hold
     //-1    = cant place hold
     public static int validateBorrow(Book book, User user, Scanner userInput){
+
+        boolean alreadyHolding  = false;
+        boolean alreadyBorrowed = false;
+
+        for(int i = 0; i < book.getNumberOfHolders(); i ++){
+            if(book.getHolder(i).equals(user.getUsername())){
+                alreadyHolding = true;
+            }
+        }
+        for(int i = 0; i < user.getNumberOfBorrowedBooks(); i ++){
+            if(user.getBorrowedBook(i).equals(book)){
+                alreadyBorrowed = true;
+            }
+        }
+        if(alreadyBorrowed){
+            System.out.println("You already have this book checked out");
+            return -1;
+        }
+        //can borrow avail books when avail and not 3 already borrowed
+        if(book.getAvailablity() == 1 && user.getNumberOfBorrowedBooks() < 3){
+            return 1;
+        }
+        //if book was returned and current user is first in queue they are able to check it out
+        if(book.getAvailablity() == -1 && book.getHolder(0).equals(user.getUsername())){
+            return 1;
+        }
+        else if(book.getAvailablity() == -1 && !book.getHolder(0).equals(user.getUsername())){
+            System.out.println("Would you like to place a hold for position ("+ (book.getNumberOfHolders() + 1)+") (Y/N): " );
+            validateHoldChoice(book,user, userInput);
+            //ask if they want to place a hold
+            return 0;
+        }
+        //cases where no hold is possible
+        if(alreadyHolding){
+            System.out.println("You already have this book on hold");
+            return -1;
+        }
+
+        if(book.getAvailablity() == -1){
+            System.out.println("Would you like to place a hold for position ("+ (book.getNumberOfHolders() + 1)+") (Y/N): " );
+            int choice = validateHoldChoice(book,user, userInput);
+            if(choice == 1){
+                return 0;
+            }
+            return - 1;
+        }
+
+        if(book.getAvailablity() == 0){
+            System.out.println("Would you like to place a hold for position ("+ (book.getNumberOfHolders() + 1)+") (Y/N): " );
+            int choice = validateHoldChoice(book,user,userInput);
+            if(choice == 1){
+                return 0;
+            }
+            return - 1;
+        }
+
+        //never able to borrow when held books = 3
+        if(user.getNumberOfBorrowedBooks() == 3){
+            System.out.println("The maximum number of borrowed books has been reached");
+            System.out.println("Would you like to place a hold for position ("+ (book.getNumberOfHolders() + 1)+") (Y/N): " );
+            int choice = validateHoldChoice(book,user,userInput);
+            if(choice == 1){
+                return 0;
+            }
+            return - 1;
+        }
         return -10;
     }
     //1 = yes

@@ -46,8 +46,10 @@ public class Book {
     }
 
     public void calculateDueDate(){
-
-        dueDate = "YYYY-MM-DD";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime due = currentDateTime.plusDays(14);
+        dueDate = due.format(formatter);
     }
 
 
