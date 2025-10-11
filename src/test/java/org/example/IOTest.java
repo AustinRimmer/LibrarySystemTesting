@@ -439,6 +439,52 @@ public class IOTest {
 
         assertEquals(1, testBorrow);
     }
+    @Test
+    @DisplayName("Testing display of user borrowed book number with no books borrowed")
+    void RESP_11_test_01(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        User user = userList.getUser(0);
+        Book book = catalogue.getBook(0);
+
+        String SimUserIn = "Y";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+
+        uiHandler.dispNumBorrowedBooks(user);
+        String testOut = "[NUMBER OF BORROWED BOOKS 0]" + System.lineSeparator();
+        assertEquals(systemOutStream.toString(), testOut);
+    }
+    @Test
+    @DisplayName("Testing display of user borrowed book number with 3 books borrowed")
+    void RESP_11_test_02(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        User user = userList.getUser(0);
+        Book book1 = catalogue.getBook(0);
+        Book book2 = catalogue.getBook(9);
+        Book book3 = catalogue.getBook(19);
+
+
+        String SimUserIn = "";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+
+        user.borrowBook(book1, userInput);
+        user.borrowBook(book2, userInput);
+        user.borrowBook(book3, userInput);
+
+        uiHandler.dispNumBorrowedBooks(user);
+        String testOut = "[NUMBER OF BORROWED BOOKS 3]" + System.lineSeparator();
+        assertEquals(systemOutStream.toString(), testOut);
+    }
+
 
 }
 
