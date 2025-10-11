@@ -55,7 +55,7 @@ public class UserIOHandler {
         System.out.println("[NUMBER OF BORROWED BOOKS " + user.getNumberOfBorrowedBooks() +"]");
     }
 
-    void dispAllBooks(Catalogue catalogue, User user) {
+    public void dispAllBooks(Catalogue catalogue, User user) {
         String availabilityString = "";
         System.out.println("");
         System.out.println("_------:=|{[BOOK SELECTION]}|=:------_");
@@ -78,5 +78,47 @@ public class UserIOHandler {
             System.out.println("<=====------------<>------------=====>");
         }
     }
+    public void dispBook(Book book){
+        String availabilityString = "";
+        System.out.println("_-------:=|{[BOOK DETAILS]}|=:-------_");
+        System.out.println("Title: " + book.getTitle());
+        System.out.println("Author: " + book.getAuthor());
+
+        if (book.getAvailablity() == 1) {
+            availabilityString = "Available";
+        }
+        if (book.getAvailablity() == 0) {
+            availabilityString = "Checked Out";
+        }
+        if (book.getAvailablity() == -1) {
+            availabilityString = "On Hold";
+        }
+        System.out.println("Status: {" + availabilityString + "}");
+        System.out.println("<=====------------<>------------=====>");
+    }
+    public int reqBorrowConfirm(Scanner usrIn){
+        System.out.println("Confirm Borrow (Y/N)");
+        String resp = usrIn.nextLine();
+        if(resp.equals("Y")){
+            return 1;
+        }
+        return -1;
+    }
+    public int getBorrowSelection(Scanner usrIn){
+        System.out.println("");
+        System.out.println("What book would you like to borrow?");
+        if(!usrIn.hasNextLine()) {
+            return -1;
+        }
+        String userBorrowSelection = usrIn.nextLine();
+        if(userBorrowSelection.matches("^([1-9]|1[0-9]|20)$")){
+            return Integer.parseInt(userBorrowSelection);
+        }
+        else{
+            //for errors
+            return -1;
+        }
+    }
+
 
 }

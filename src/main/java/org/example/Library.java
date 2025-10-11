@@ -65,4 +65,12 @@ public class Library {
         return Integer.parseInt(userChoice);
     }
 
+    public static void borrowState(UserIOHandler userIOHandler, User user, Catalogue catalogue, Scanner userInput){
+        userIOHandler.dispNumBorrowedBooks(user);
+
+
+
+
+    }
+
 }
