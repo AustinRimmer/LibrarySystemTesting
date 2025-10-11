@@ -5,34 +5,33 @@ import java.util.Scanner;
 public class UserIOHandler {
     Scanner inputScanner;
     UserList userList;
-    UserIOHandler(Scanner userInput, UserList userList){
+    public UserIOHandler(Scanner userInput, UserList userList){
         this.inputScanner = userInput;
         this.userList = userList;
     }
-    UserIOHandler(Scanner userInput){
+    public UserIOHandler(Scanner userInput){
         this.inputScanner = userInput;
     }
-
-    User getUserLogin(Scanner usrIn){
+    public User getUserLogin(Scanner usrIn){
         String username = reqUsername(usrIn);
         String password = reqPassword(usrIn);
         return new User(username, password);
     }
-    String reqUsername(Scanner usrIn){
+    public String reqUsername(Scanner usrIn){
         System.out.println("Enter username:");
         String username = usrIn.nextLine();
         return username;
     }
-    String reqHoldChoice(Scanner usrIn){
+    public String reqHoldChoice(Scanner usrIn){
         String choice = usrIn.nextLine();
         return choice;
     }
-    String reqPassword(Scanner usrIn){
+    public String reqPassword(Scanner usrIn){
         System.out.println("Enter password");
         String password = usrIn.nextLine();
         return password;
     }
-    void dispUserHolds(User user){
+    public void dispUserHolds(User user){
         ArrayList<Integer> userBookAvails = user.getHeldBookAvailability();
         if(userBookAvails.get(0) == -3){
             System.out.println("No User Holds");
@@ -44,7 +43,7 @@ public class UserIOHandler {
             }
         }
     }
-    String reqSystemOperation(Scanner usrIn){
+    public String reqSystemOperation(Scanner usrIn){
         System.out.println("-----:=|{[SYSTEM OPERATIONS]}|=:------");
         System.out.println("(1) borrow a book");
         System.out.println("(2) return a book");
