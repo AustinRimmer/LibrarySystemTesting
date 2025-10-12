@@ -12,35 +12,38 @@ public class Library {
 
         initializeSessionHolder(userInput,uiHandler,userList);
     }
-    public static Boolean initializeSessionHolder(Scanner userInput, UserIOHandler uiHandler, UserList userList){
+    public static Boolean initializeSessionHolder(Scanner userInput, UserIOHandler uiHandler, UserList userList) {
 
         String tempUsername = "";
         String tempPassword = "";
 
-        boolean validUser = false;
-        boolean validPass = false;
-
-        while (!validUser || !validPass){
-            //make so if password and username already exist then can login still
+        while (true) {
             User currentUserLogin = uiHandler.getUserLogin(userInput);
 
-            validUser = false;
-            validPass = false;
-            if(Validator.validateUsername(currentUserLogin.getUsername(),userList)) {
-                validUser = true;
+            boolean existingUser = false;
+            for (int i = 0; i < userList.getNumberOfUsers(); i++) {
+                User existing = userList.getUser(i);
+                if (existing.getUsername().equals(currentUserLogin.getUsername()) &&
+                        existing.getPassword().equals(currentUserLogin.getPassword())) {
+                    existingUser = true;
+                    break;
+                }
             }
-            if(Validator.validatePassword(currentUserLogin.getPassword())){
-                validPass = true;
+            if (existingUser) {
+                sessionOwner = currentUserLogin;
+                System.out.println("User Validated: welcome...");
+                return true;
+            }
+            boolean validUser = Validator.validateUsername(currentUserLogin.getUsername(), userList);
+            boolean validPass = Validator.validatePassword(currentUserLogin.getPassword());
 
-            }
-            if(validPass && validUser){
+            if (validUser && validPass) {
                 tempUsername = currentUserLogin.getUsername();
                 tempPassword = currentUserLogin.getPassword();
                 break;
             }
         }
-        sessionOwner = new User(tempUsername,tempPassword);
-
+        sessionOwner = new User(tempUsername, tempPassword);
         userList.addUser(sessionOwner);
         System.out.println("User Validated: welcome...");
         return true;
