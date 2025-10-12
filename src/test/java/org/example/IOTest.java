@@ -2292,6 +2292,20 @@ public class IOTest {
 
         assertTrue(expectedOut.startsWith(systemOutStream.toString()), "");
     }
+    @Test
+    @DisplayName("Testing user being notified of sucessfull logout")
+    void RESP_18_test_01(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        String SimUserIn = "";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        Library.logoutState(uiHandler,userList.getUser(0),catalogue,userInput);
+        assertEquals("You have successfully been logged out..." + System.lineSeparator() ,systemOutStream.toString());
+    }
 
 
 

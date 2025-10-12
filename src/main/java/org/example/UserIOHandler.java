@@ -160,6 +160,9 @@ public class UserIOHandler {
         }
         return -1;
     }
+    public void dispLogOutConfirm(){
+        System.out.println("");
+    }
 
 
 

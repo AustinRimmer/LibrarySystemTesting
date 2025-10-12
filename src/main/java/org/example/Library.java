@@ -136,6 +136,10 @@ public class Library {
 
 
     }
+    public static void logoutState(UserIOHandler userIOHandler, User user, Catalogue catalogue, Scanner userInput){
+        userIOHandler.dispLogOutConfirm();
+    }
+
 
 }
 
