@@ -21,6 +21,7 @@ public class Library {
         boolean validPass = false;
 
         while (!validUser || !validPass){
+            //make so if password and username already exist then can login still
             User currentUserLogin = uiHandler.getUserLogin(userInput);
 
             validUser = false;

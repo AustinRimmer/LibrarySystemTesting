@@ -89,6 +89,26 @@ public class IOTest {
 
     }
     @Test
+    @DisplayName("Testing that existing users can log in with correct credentials (not just sign in as new user like previously)")
+    void RESP_03_test_09() {
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        User existingUser = userList.getUser(0);
+        String simulatedInput = existingUser.getUsername() + System.lineSeparator()
+                + existingUser.getPassword() + System.lineSeparator();
+
+        Scanner userInput = new Scanner(new ByteArrayInputStream(simulatedInput.getBytes()));
+        UserIOHandler uiHandler = new UserIOHandler(userInput);
+
+        boolean result = Library.initializeSessionHolder(userInput, uiHandler, userList);
+        assertEquals(true, result, "Expected session initialization to succeed for existing user");
+        String expectedOut = "Enter username:" + System.lineSeparator() +
+                "Enter password"+ System.lineSeparator() +
+                "User Validated: welcome..." + System.lineSeparator();
+        assertEquals(expectedOut, systemOutStream.toString());
+    }
+    @Test
     @DisplayName("Checking if a valid entered user session is established (tests both io and method return)")
     void RESP_04_test_01(){
         Library library = new Library();
