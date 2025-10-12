@@ -123,7 +123,7 @@ public class Library {
                 continue; // go back to selection
             }
 
-            Book selectedBook = catalogue.getBook(returnSelection - 1);
+            Book selectedBook = user.getBorrowedBook(returnSelection - 1);
             userIOHandler.dispBook(selectedBook);
 
             int returnConfirm = userIOHandler.reqReturnConfirm(userInput);

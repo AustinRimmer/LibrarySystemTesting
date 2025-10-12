@@ -140,10 +140,13 @@ public class UserIOHandler {
     public int getReturnSelection(Scanner usrIn, User user){
         System.out.println("");
         System.out.println("What book would you like to return?");
-        if(!usrIn.hasNextLine()) {
+        if(!usrIn.hasNextLine() ) {
             return -1;
         }
         String userHoldSelection = usrIn.nextLine();
+        if(userHoldSelection.isEmpty() || !userHoldSelection.matches("\\d+")){
+            return -1;
+        }
         if(Integer.parseInt(userHoldSelection) >= 1 && Integer.parseInt(userHoldSelection) <= user.getNumberOfBorrowedBooks()){
             return Integer.parseInt(userHoldSelection);
         }
