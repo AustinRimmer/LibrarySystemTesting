@@ -337,6 +337,34 @@ public class LibraryTest {
         assertEquals(-1,book1.getAvailablity());
     }
     @Test
+    @DisplayName("Boundary Testing successful return of book with no holds")
+    void RESP_17_test_03(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        User user1 = userList.getUser(0);
+        User user2 = userList.getUser(1);
+        Book book1 = catalogue.getBook(19);
+
+        String SimUserIn = "1\nY";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        user1.borrowBook(book1,userInput);
+
+
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        Library.returnState(uiHandler,user1,catalogue,userInput);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String expectedDueDate = currentDate.plusDays(14).format(formatter);
+
+
+        assertEquals(1,book1.getAvailablity());
+    }
+    @Test
     @DisplayName("Testing wipe of current session holder")
     void RESP_19_test_01(){
         InitializeLibrary library = new InitializeLibrary();
