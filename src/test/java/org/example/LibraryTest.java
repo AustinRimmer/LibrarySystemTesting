@@ -338,7 +338,7 @@ public class LibraryTest {
     }
     @Test
     @DisplayName("Testing wipe of current session holder")
-    void RESP_18_test_01(){
+    void RESP_19_test_01(){
         InitializeLibrary library = new InitializeLibrary();
         Catalogue catalogue = library.initializeLibrary();
         InitializeUserList initializeUserList = new InitializeUserList();
