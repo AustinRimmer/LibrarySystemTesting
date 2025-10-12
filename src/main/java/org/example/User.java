@@ -48,7 +48,16 @@ public class User {
         return validBorrow;
     }
     public void returnBook(Book book){
-
+        this.borrowedBooks.remove(book);
+        if(book.getNumberOfHolders() == 0){
+            book.setAvailablity(1);
+            book.resetDueDate();
+        }
+        if(book.getNumberOfHolders() != 0){
+            book.setAvailablity(-1);
+            book.resetDueDate();
+            //ignoring UC here since it contradicts itself constantly, it will be set to on Hold, and the user first in hold queue can borrow it
+        }
     }
     //if returns -2 it means user has no holds
     public ArrayList<Integer> getHeldBookAvailability(){

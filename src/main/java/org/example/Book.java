@@ -51,6 +51,8 @@ public class Book {
         LocalDateTime due = currentDateTime.plusDays(14);
         dueDate = due.format(formatter);
     }
-
+    public void resetDueDate(){
+        dueDate = "NOT CHECKED OUT";
+    }
 
 }
