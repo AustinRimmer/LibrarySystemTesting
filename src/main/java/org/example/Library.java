@@ -45,7 +45,7 @@ public class Library {
         return true;
     }
 
-    public User getCurrentSessionHolder(){
+    public static User getCurrentSessionHolder(){
         return sessionOwner;
     }
 

@@ -336,6 +336,28 @@ public class LibraryTest {
         assertEquals(book2,user1.getBorrowedBook(0));
         assertEquals(-1,book1.getAvailablity());
     }
+    @Test
+    @DisplayName("Testing wipe of current session holder")
+    void RESP_18_test_01(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        String SimUserIn = "";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        User user = userList.getUser(0);
+        user.borrowBook(catalogue.getBook(0),userInput);
+        user.addBookToOnHoldBooks(catalogue.getBook(0));
+        Library.sessionOwner = user;
+        Library.logoutState(uiHandler,userList.getUser(0),catalogue,userInput);
+
+        assertEquals("default",Library.getCurrentSessionHolder().getUsername());
+        assertEquals("default",Library.getCurrentSessionHolder().getPassword());
+        assertTrue(Library.getCurrentSessionHolder().getBooksOnHold().isEmpty());
+        assertTrue(Library.getCurrentSessionHolder().getNumberOfBorrowedBooks() == 0);
+    }
 
 
 }
