@@ -105,10 +105,37 @@ public class Library {
 
     }
     public static void returnState(UserIOHandler userIOHandler, User user, Catalogue catalogue, Scanner userInput){
-        System.out.println("a");
+        int returnStatus = 0;
 
+        while (true) {
+            userIOHandler.dispUserBorrows(user);
+            if(user.getNumberOfBorrowedBooks() == 0){
+                break;
+            }
+            int returnSelection = userIOHandler.getReturnSelection(userInput, user);
+
+            if (returnSelection == -1) {
+                System.out.println("Invalid selection please try again...");
+                continue; // go back to selection
+            }
+
+            Book selectedBook = catalogue.getBook(returnSelection - 1);
+            userIOHandler.dispBook(selectedBook);
+
+            int returnConfirm = userIOHandler.reqReturnConfirm(userInput);
+            if (returnConfirm == -1) {
+                continue;
+            }
+            if(returnConfirm == 1){
+                System.out.println("You have successfully returned " + catalogue.getBook(returnSelection - 1).getTitle());
+                //do nothing for now
+            }
+
+            break;
+        }
 
 
     }
 
 }
+
