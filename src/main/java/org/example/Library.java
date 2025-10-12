@@ -104,5 +104,11 @@ public class Library {
         }
 
     }
+    public static void returnState(UserIOHandler userIOHandler, User user, Catalogue catalogue, Scanner userInput){
+        System.out.println("a");
+
+
+
+    }
 
 }

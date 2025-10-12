@@ -2112,6 +2112,186 @@ public class IOTest {
                 "<=====------------<>------------=====>" + System.lineSeparator();
         assertEquals(systemOutStream.toString(), testOut);
     }
+    @Test
+    @DisplayName("testing user return prompt with no borrowed books")
+    void RESP_16_test_01(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        User user = userList.getUser(0);
+        Book book = catalogue.getBook(0);
+
+        String SimUserIn = "";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        Library.returnState(uiHandler,user,catalogue,userInput);
+        String expectedOut = "You Have No Books Borrowed" + System.lineSeparator();
+
+        assertTrue(expectedOut.startsWith(systemOutStream.toString()), "");
+    }
+
+    @Test
+    @DisplayName("testing user return prompt with 2 borrowed books and returning the first")
+    void RESP_16_test_02(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        User user = userList.getUser(0);
+        Book book1 = catalogue.getBook(0);
+        Book book2 = catalogue.getBook(1);
+
+        String SimUserIn = "1\nY";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        user.borrowBook(book1,userInput);
+        user.borrowBook(book2,userInput);
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        Library.returnState(uiHandler,user,catalogue,userInput);
+        String expectedOut = "_------:=|{[BORROWED BOOKS]}|=:------_" + System.lineSeparator() +
+                "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "(2)" + System.lineSeparator() +
+                "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
+                "Author: Birdy McBorderman" + System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                System.lineSeparator() +
+                "What book would you like to return?" + System.lineSeparator() +
+                "_-------:=|{[BOOK DETAILS]}|=:-------_" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Status: {Checked Out}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "Confirm Return (Y/N)" + System.lineSeparator() +
+                "You have successfully returned The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator();
+
+        assertTrue(expectedOut.startsWith(systemOutStream.toString()), "");
+    }
+    @Test
+    @DisplayName("testing negative flow of user return prompt with 2 borrowed books, making an invalid selection, then returning the first")
+    void RESP_16_test_03(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        User user = userList.getUser(0);
+        Book book1 = catalogue.getBook(0);
+        Book book2 = catalogue.getBook(1);
+
+        String SimUserIn = "0\n1\nY";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        user.borrowBook(book1,userInput);
+        user.borrowBook(book2,userInput);
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        Library.returnState(uiHandler,user,catalogue,userInput);
+        String expectedOut = "_------:=|{[BORROWED BOOKS]}|=:------_" + System.lineSeparator() +
+                "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "(2)" + System.lineSeparator() +
+                "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
+                "Author: Birdy McBorderman" + System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                System.lineSeparator() +
+                "What book would you like to return?" + System.lineSeparator() +
+                "Invalid selection please try again..." + System.lineSeparator() +
+                "_------:=|{[BORROWED BOOKS]}|=:------_" + System.lineSeparator() +
+                "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "(2)" + System.lineSeparator() +
+                "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
+                "Author: Birdy McBorderman" + System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                System.lineSeparator() +
+                "What book would you like to return?" + System.lineSeparator() +
+                "_-------:=|{[BOOK DETAILS]}|=:-------_" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Status: {Checked Out}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "Confirm Return (Y/N)" + System.lineSeparator() +
+                "You have successfully returned The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator();
+
+        assertTrue(expectedOut.startsWith(systemOutStream.toString()), "");
+    }
+    @Test
+    @DisplayName("testing negative flow of user return prompt with 2 borrowed books, making a valid selection, declining, then returning the first")
+    void RESP_16_test_04(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        User user = userList.getUser(0);
+        Book book1 = catalogue.getBook(0);
+        Book book2 = catalogue.getBook(1);
+
+        String SimUserIn = "1\nN\n1\nY";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        user.borrowBook(book1,userInput);
+        user.borrowBook(book2,userInput);
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        Library.returnState(uiHandler,user,catalogue,userInput);
+        String expectedOut = "_------:=|{[BORROWED BOOKS]}|=:------_" + System.lineSeparator() +
+                "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "(2)" + System.lineSeparator() +
+                "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
+                "Author: Birdy McBorderman" + System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                System.lineSeparator() +
+                "What book would you like to return?" + System.lineSeparator() +
+                "_-------:=|{[BOOK DETAILS]}|=:-------_" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Status: {Checked Out}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "Confirm Return (Y/N)" + System.lineSeparator() +
+                "_------:=|{[BORROWED BOOKS]}|=:------_" + System.lineSeparator() +
+                "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "(2)" + System.lineSeparator() +
+                "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
+                "Author: Birdy McBorderman" + System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                System.lineSeparator() +
+                "What book would you like to return?" + System.lineSeparator() +
+                "_-------:=|{[BOOK DETAILS]}|=:-------_" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Status: {Checked Out}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "Confirm Return (Y/N)" + System.lineSeparator() +
+                "You have successfully returned The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator();
+
+        assertTrue(expectedOut.startsWith(systemOutStream.toString()), "");
+    }
 
 
 

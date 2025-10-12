@@ -137,6 +137,31 @@ public class UserIOHandler {
             return -1;
         }
     }
+    public int getReturnSelection(Scanner usrIn, User user){
+        System.out.println("");
+        System.out.println("What book would you like to return?");
+        if(!usrIn.hasNextLine()) {
+            return -1;
+        }
+        String userHoldSelection = usrIn.nextLine();
+        if(Integer.parseInt(userHoldSelection) >= 1 && Integer.parseInt(userHoldSelection) <= user.getNumberOfBorrowedBooks()){
+            return Integer.parseInt(userHoldSelection);
+        }
+        else{
+            //for errors
+            return -1;
+        }
+    }
+    public int reqReturnConfirm(Scanner usrIn){
+        System.out.println("Confirm Return (Y/N)");
+        String resp = usrIn.nextLine();
+        if(resp.equals("Y")){
+            return 1;
+        }
+        return -1;
+    }
+
+
 
 
 }
