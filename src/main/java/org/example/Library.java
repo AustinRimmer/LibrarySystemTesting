@@ -67,6 +67,41 @@ public class Library {
 
     public static void borrowState(UserIOHandler userIOHandler, User user, Catalogue catalogue, Scanner userInput){
         userIOHandler.dispNumBorrowedBooks(user);
+        int borrowStatus = 0;
+
+        while (true) {
+            userIOHandler.dispAllBooks(catalogue, user);
+            int borrowSelection = userIOHandler.getBorrowSelection(userInput);
+
+            if (borrowSelection == -1) {
+                System.out.println("Invalid selection please try again...");
+                continue; // go back to selection
+            }
+
+            Book selectedBook = catalogue.getBook(borrowSelection - 1);
+            userIOHandler.dispBook(selectedBook);
+
+            int borrowConfirm = userIOHandler.reqBorrowConfirm(userInput);
+            if (borrowConfirm == -1) {
+                continue;
+            }
+            if(borrowConfirm == 1){
+
+                borrowStatus = user.borrowBook(selectedBook, userInput);
+            }
+            if(borrowStatus == 1){
+                System.out.println("You have successfully borrowed: " + catalogue.getBook(borrowSelection - 1).getTitle());
+                System.out.println("It is due: " + selectedBook.getDueDate());
+            }
+            if(borrowStatus == 0){
+                System.out.println("You have successfully been added to the hold queue");
+            }
+            if(borrowStatus == -1){
+                System.out.println("You cannot place a hold on this book");
+                continue;
+            }
+            break;
+        }
 
     }
 
