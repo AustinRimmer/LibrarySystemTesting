@@ -46,7 +46,19 @@ public class UserIOHandler {
     //-1 for no books borrowed
     //1 for books borrowed
     public int dispUserBorrows(User user) {
-        System.out.println("");
+        if(user.getNumberOfBorrowedBooks() == 0){
+            System.out.println("You Have No Books Borrowed");
+            return -1;
+        }
+        System.out.println("_------:=|{[BORROWED BOOKS]}|=:------_");
+        for(int i = 0; i < user.getNumberOfBorrowedBooks(); i ++){
+            Book book = user.getBorrowedBook(i);
+            System.out.println("(" + (i + 1) + ")");
+            System.out.println("Title: " + book.getTitle());
+            System.out.println("Author: " + book.getAuthor());
+            System.out.println("Due Date: " + book.getDueDate());
+            System.out.println("<=====------------<>------------=====>");
+        }
         return 1;
     }
     public String reqSystemOperation(Scanner usrIn){
