@@ -47,6 +47,9 @@ public class User {
         //def gonna need other stuff for disp later
         return validBorrow;
     }
+    public void returnBook(Book book){
+
+    }
     //if returns -2 it means user has no holds
     public ArrayList<Integer> getHeldBookAvailability(){
         ArrayList<Integer> heldBookAvailabilities = new ArrayList<>();

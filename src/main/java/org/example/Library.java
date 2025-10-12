@@ -128,7 +128,7 @@ public class Library {
             }
             if(returnConfirm == 1){
                 System.out.println("You have successfully returned " + catalogue.getBook(returnSelection - 1).getTitle());
-                //do nothing for now
+                user.returnBook(selectedBook);
             }
 
             break;

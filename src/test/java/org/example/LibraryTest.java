@@ -276,6 +276,66 @@ public class LibraryTest {
 
         assertEquals(testDueDate, book.getDueDate());
     }
+    @Test
+    @DisplayName("Testing successful return of book with no holds")
+    void RESP_17_test_01(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        User user = userList.getUser(0);
+        Book book1 = catalogue.getBook(0);
+        Book book2 = catalogue.getBook(1);
+
+        String SimUserIn = "1\nY";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        user.borrowBook(book1,userInput);
+        user.borrowBook(book2,userInput);
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        Library.returnState(uiHandler,user,catalogue,userInput);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String expectedDueDate = currentDate.plusDays(14).format(formatter);
+
+        assertEquals("NOT CHECKED OUT", book1.getDueDate());
+        assertEquals(expectedDueDate, book2.getDueDate());
+        assertEquals(book2,user.getBorrowedBook(0));
+        assertEquals(1,book1.getAvailablity());
+    }
+    @Test
+    @DisplayName("Testing successful return of book with holds")
+    void RESP_17_test_02(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        User user1 = userList.getUser(0);
+        User user2 = userList.getUser(1);
+        Book book1 = catalogue.getBook(0);
+        Book book2 = catalogue.getBook(1);
+
+        String SimUserIn = "1\nY";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        user1.borrowBook(book1,userInput);
+        user2.addBookToOnHoldBooks(book1);
+        user1.borrowBook(book2,userInput);
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        Library.returnState(uiHandler,user1,catalogue,userInput);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String expectedDueDate = currentDate.plusDays(14).format(formatter);
+
+        assertEquals("NOT CHECKED OUT", book1.getDueDate());
+        assertEquals(expectedDueDate, book2.getDueDate());
+        assertEquals(book2,user1.getBorrowedBook(0));
+        assertEquals(-1,book1.getAvailablity());
+    }
 
 
 }
