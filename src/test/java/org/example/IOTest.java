@@ -2062,7 +2062,56 @@ public class IOTest {
                 "It is due: " + catalogue.getBook(1).getDueDate() + System.lineSeparator();
         assertTrue(expectedOut.startsWith(systemOutStream.toString()), "");
     }
+    @Test
+    @DisplayName("Testing borrow disp with no borrowed books")
+    void RESP_15_test_01(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
 
+        User user = userList.getUser(0);
+        Book book = catalogue.getBook(0);
+
+        String SimUserIn = "";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+
+        uiHandler.dispUserBorrows(user);
+        String testOut = "You Have No Books Borrowed" + System.lineSeparator();
+        assertEquals(systemOutStream.toString(), testOut);
+    }
+    @Test
+    @DisplayName("Testing borrow disp with 2 borrowed books")
+    void RESP_15_test_02(){
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        User user = userList.getUser(0);
+        Book book = catalogue.getBook(0);
+
+        String SimUserIn = "";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        user.borrowBook(catalogue.getBook(0),userInput);
+        user.borrowBook(catalogue.getBook(1),userInput);
+        uiHandler.dispUserBorrows(user);
+        String testOut = "_------:=|{[BORROWED BOOKS]}|=:------_" + System.lineSeparator() +
+                "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III"+ System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "(2)" + System.lineSeparator() +
+                "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
+                "Author: Birdy McBorderman" + System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator();
+        assertEquals(systemOutStream.toString(), testOut);
+    }
 
 
 

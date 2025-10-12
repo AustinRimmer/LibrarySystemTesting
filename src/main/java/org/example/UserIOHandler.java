@@ -43,6 +43,12 @@ public class UserIOHandler {
             }
         }
     }
+    //-1 for no books borrowed
+    //1 for books borrowed
+    public int dispUserBorrows(User user) {
+        System.out.println("");
+        return 1;
+    }
     public String reqSystemOperation(Scanner usrIn){
         System.out.println("-----:=|{[SYSTEM OPERATIONS]}|=:------");
         System.out.println("(1) borrow a book");
