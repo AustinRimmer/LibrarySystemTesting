@@ -1437,6 +1437,634 @@ public class IOTest {
         //note: i just want to make it clear how horrible coding these tests first is, like this sucks to make code for
     }
 
+    //NOTE THAT THIS WILL ALWAYS PASS SINCE IT ISNT CALLING ANYTHING NEW, AS PER PROF REPLIES IN DISCUSSION BOARDS THIS IS FINE
+    @Test
+    @DisplayName("Testing borrow result message from positive flow with valid borrow selection")
+    void RESP_14_test_01() {
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        User user = userList.getUser(0);
+
+        String SimUserIn = "1\nY\n";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        Library.borrowState(uiHandler,user,catalogue,userInput); //1 here means user selected borrow operation
+        String expectedOut = "[NUMBER OF BORROWED BOOKS 0]" + System.lineSeparator()
+                + System.lineSeparator() +
+                "_------:=|{[BOOK SELECTION]}|=:------_" +System.lineSeparator() +
+                "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" +System.lineSeparator() +
+                "Author: Dennis Bartholomew III" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(2)" + System.lineSeparator() +
+                "Title: How to train Pigeons: A guide to flight" +System.lineSeparator() +
+                "Author: Birdy McBorderman" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(3)" + System.lineSeparator() +
+                "Title: Day Drinking: How to do it & How not to stop" +System.lineSeparator() +
+                "Author: Ann Alkelhoul Adick" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(4)" + System.lineSeparator() +
+                "Title: Sacrificial Birds and how to raise them" +System.lineSeparator() +
+                "Author: Birdy McBorderman" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(5)" + System.lineSeparator() +
+                "Title: Summoning Rituals: Beginner Edition" +System.lineSeparator() +
+                "Author: Alvin Evil" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(6)" + System.lineSeparator() +
+                "Title: How to program Tron & Make it a movie" +System.lineSeparator() +
+                "Author: Bill Adams & Steven Lisberger" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(7)" + System.lineSeparator() +
+                "Title: How to enter old arcade machines" +System.lineSeparator() +
+                "Author: Sam Flynn" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(8)" + System.lineSeparator() +
+                "Title: The cunning and witty emaculations of sophisticated Gentlemen" +System.lineSeparator() +
+                "Author: Sir Tophattington of Florence the III" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(9)" + System.lineSeparator() +
+                "Title: How to train dragons: a guide to owning house geckos" +System.lineSeparator() +
+                "Author: Lisa Lizard" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(10)" + System.lineSeparator() +
+                "Title: The Murderizing Mutilator Strikes back" +System.lineSeparator() +
+                "Author: Stephan Queen" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(11)" + System.lineSeparator() +
+                "Title: A sudsy and cleaning story" +System.lineSeparator() +
+                "Author: Mr. Clean" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(12)" + System.lineSeparator() +
+                "Title: Trains and sewing machines" +System.lineSeparator() +
+                "Author: Imogen Heap" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(13)" + System.lineSeparator() +
+                "Title: How to sample someone else's song" +System.lineSeparator() +
+                "Author: Jason D" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(14)" + System.lineSeparator() +
+                "Title: Burning Bridges: a guide to messy relationships" +System.lineSeparator() +
+                "Author: alisha McHomewrecker" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(15)" + System.lineSeparator() +
+                "Title: 10 dos and donts of eating burritos" +System.lineSeparator() +
+                "Author: Ieym Phatt" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(16)" + System.lineSeparator() +
+                "Title: A Guide on Exterminating Gnomes" +System.lineSeparator() +
+                "Author: A.R Jr. Mcdavid" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(17)" + System.lineSeparator() +
+                "Title: Trains and their inner workings" +System.lineSeparator() +
+                "Author: Thomas D.A. Tank" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(18)" + System.lineSeparator() +
+                "Title: How to download RAM" +System.lineSeparator() +
+                "Author: Eugine McGullible" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(19)" + System.lineSeparator() +
+                "Title: Wizard Spells for beginners: pyrokinesis edition" +System.lineSeparator() +
+                "Author: G. Grey" +System.lineSeparator() +
+                "Status: {Available}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "(20)" + System.lineSeparator()+
+                "Title: How to code in scheme"+ System.lineSeparator()+
+                "Author: Lord Sean Benjamin XII"+ System.lineSeparator()+
+                "Status: {Available}"+ System.lineSeparator()+
+                "<=====------------<>------------=====>" + System.lineSeparator() + System.lineSeparator() +
+                "What book would you like to borrow?" + System.lineSeparator() +
+                "_-------:=|{[BOOK DETAILS]}|=:-------_" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Status: {Available}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "Confirm Borrow (Y/N)" + System.lineSeparator() +
+                "You have successfully borrowed: " + catalogue.getBook(0).getTitle() +System.lineSeparator()+
+                "It is due: " + catalogue.getBook(0).getDueDate() + System.lineSeparator();
+        assertTrue(expectedOut.startsWith(systemOutStream.toString()), "");
+    }
+    @Test
+    @DisplayName("Testing borrow result message from positive flow with valid hold selection ")
+    void RESP_14_test_02() {
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        User user = userList.getUser(0);
+        catalogue.getBook(0).setAvailablity(0);
+        String SimUserIn = "1\nY\nY\n";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        Library.borrowState(uiHandler,user,catalogue,userInput); //1 here means user selected borrow operation
+        String expectedOut = "[NUMBER OF BORROWED BOOKS 0]" + System.lineSeparator()
+                + System.lineSeparator() +
+                "_------:=|{[BOOK SELECTION]}|=:------_" +System.lineSeparator() +
+                "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" +System.lineSeparator() +
+                "Author: Dennis Bartholomew III" +System.lineSeparator() +
+                "Status: {Checked Out}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(2)" + System.lineSeparator() +
+                "Title: How to train Pigeons: A guide to flight" +System.lineSeparator() +
+                "Author: Birdy McBorderman" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(3)" + System.lineSeparator() +
+                "Title: Day Drinking: How to do it & How not to stop" +System.lineSeparator() +
+                "Author: Ann Alkelhoul Adick" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(4)" + System.lineSeparator() +
+                "Title: Sacrificial Birds and how to raise them" +System.lineSeparator() +
+                "Author: Birdy McBorderman" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(5)" + System.lineSeparator() +
+                "Title: Summoning Rituals: Beginner Edition" +System.lineSeparator() +
+                "Author: Alvin Evil" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(6)" + System.lineSeparator() +
+                "Title: How to program Tron & Make it a movie" +System.lineSeparator() +
+                "Author: Bill Adams & Steven Lisberger" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(7)" + System.lineSeparator() +
+                "Title: How to enter old arcade machines" +System.lineSeparator() +
+                "Author: Sam Flynn" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(8)" + System.lineSeparator() +
+                "Title: The cunning and witty emaculations of sophisticated Gentlemen" +System.lineSeparator() +
+                "Author: Sir Tophattington of Florence the III" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(9)" + System.lineSeparator() +
+                "Title: How to train dragons: a guide to owning house geckos" +System.lineSeparator() +
+                "Author: Lisa Lizard" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(10)" + System.lineSeparator() +
+                "Title: The Murderizing Mutilator Strikes back" +System.lineSeparator() +
+                "Author: Stephan Queen" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(11)" + System.lineSeparator() +
+                "Title: A sudsy and cleaning story" +System.lineSeparator() +
+                "Author: Mr. Clean" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(12)" + System.lineSeparator() +
+                "Title: Trains and sewing machines" +System.lineSeparator() +
+                "Author: Imogen Heap" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(13)" + System.lineSeparator() +
+                "Title: How to sample someone else's song" +System.lineSeparator() +
+                "Author: Jason D" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(14)" + System.lineSeparator() +
+                "Title: Burning Bridges: a guide to messy relationships" +System.lineSeparator() +
+                "Author: alisha McHomewrecker" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(15)" + System.lineSeparator() +
+                "Title: 10 dos and donts of eating burritos" +System.lineSeparator() +
+                "Author: Ieym Phatt" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(16)" + System.lineSeparator() +
+                "Title: A Guide on Exterminating Gnomes" +System.lineSeparator() +
+                "Author: A.R Jr. Mcdavid" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(17)" + System.lineSeparator() +
+                "Title: Trains and their inner workings" +System.lineSeparator() +
+                "Author: Thomas D.A. Tank" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(18)" + System.lineSeparator() +
+                "Title: How to download RAM" +System.lineSeparator() +
+                "Author: Eugine McGullible" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(19)" + System.lineSeparator() +
+                "Title: Wizard Spells for beginners: pyrokinesis edition" +System.lineSeparator() +
+                "Author: G. Grey" +System.lineSeparator() +
+                "Status: {Available}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "(20)" + System.lineSeparator()+
+                "Title: How to code in scheme"+ System.lineSeparator()+
+                "Author: Lord Sean Benjamin XII"+ System.lineSeparator()+
+                "Status: {Available}"+ System.lineSeparator()+
+                "<=====------------<>------------=====>" + System.lineSeparator() + System.lineSeparator() +
+                "What book would you like to borrow?" + System.lineSeparator() +
+                "_-------:=|{[BOOK DETAILS]}|=:-------_" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Status: {Checked Out}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "Confirm Borrow (Y/N)" + System.lineSeparator() +
+                "Would you like to place a hold for position (1) (Y/N): " +System.lineSeparator() +
+                "You have successfully been added to the hold queue" + System.lineSeparator();
+        assertTrue(expectedOut.startsWith(systemOutStream.toString()), "");
+
+    }
+    @Test
+    @DisplayName("Testing borrow result message from positive flow with valid hold selection ")
+    void RESP_14_test_03() {
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        User user = userList.getUser(0);
+        catalogue.getBook(0).setAvailablity(-1);
+        String SimUserIn = "1\nY\nY\n";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        Library.borrowState(uiHandler,user,catalogue,userInput); //1 here means user selected borrow operation
+        String expectedOut = "[NUMBER OF BORROWED BOOKS 0]" + System.lineSeparator()
+                + System.lineSeparator() +
+                "_------:=|{[BOOK SELECTION]}|=:------_" +System.lineSeparator() +
+                "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" +System.lineSeparator() +
+                "Author: Dennis Bartholomew III" +System.lineSeparator() +
+                "Status: {On Hold}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(2)" + System.lineSeparator() +
+                "Title: How to train Pigeons: A guide to flight" +System.lineSeparator() +
+                "Author: Birdy McBorderman" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(3)" + System.lineSeparator() +
+                "Title: Day Drinking: How to do it & How not to stop" +System.lineSeparator() +
+                "Author: Ann Alkelhoul Adick" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(4)" + System.lineSeparator() +
+                "Title: Sacrificial Birds and how to raise them" +System.lineSeparator() +
+                "Author: Birdy McBorderman" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(5)" + System.lineSeparator() +
+                "Title: Summoning Rituals: Beginner Edition" +System.lineSeparator() +
+                "Author: Alvin Evil" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(6)" + System.lineSeparator() +
+                "Title: How to program Tron & Make it a movie" +System.lineSeparator() +
+                "Author: Bill Adams & Steven Lisberger" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(7)" + System.lineSeparator() +
+                "Title: How to enter old arcade machines" +System.lineSeparator() +
+                "Author: Sam Flynn" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(8)" + System.lineSeparator() +
+                "Title: The cunning and witty emaculations of sophisticated Gentlemen" +System.lineSeparator() +
+                "Author: Sir Tophattington of Florence the III" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(9)" + System.lineSeparator() +
+                "Title: How to train dragons: a guide to owning house geckos" +System.lineSeparator() +
+                "Author: Lisa Lizard" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(10)" + System.lineSeparator() +
+                "Title: The Murderizing Mutilator Strikes back" +System.lineSeparator() +
+                "Author: Stephan Queen" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(11)" + System.lineSeparator() +
+                "Title: A sudsy and cleaning story" +System.lineSeparator() +
+                "Author: Mr. Clean" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(12)" + System.lineSeparator() +
+                "Title: Trains and sewing machines" +System.lineSeparator() +
+                "Author: Imogen Heap" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(13)" + System.lineSeparator() +
+                "Title: How to sample someone else's song" +System.lineSeparator() +
+                "Author: Jason D" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(14)" + System.lineSeparator() +
+                "Title: Burning Bridges: a guide to messy relationships" +System.lineSeparator() +
+                "Author: alisha McHomewrecker" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(15)" + System.lineSeparator() +
+                "Title: 10 dos and donts of eating burritos" +System.lineSeparator() +
+                "Author: Ieym Phatt" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(16)" + System.lineSeparator() +
+                "Title: A Guide on Exterminating Gnomes" +System.lineSeparator() +
+                "Author: A.R Jr. Mcdavid" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(17)" + System.lineSeparator() +
+                "Title: Trains and their inner workings" +System.lineSeparator() +
+                "Author: Thomas D.A. Tank" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(18)" + System.lineSeparator() +
+                "Title: How to download RAM" +System.lineSeparator() +
+                "Author: Eugine McGullible" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(19)" + System.lineSeparator() +
+                "Title: Wizard Spells for beginners: pyrokinesis edition" +System.lineSeparator() +
+                "Author: G. Grey" +System.lineSeparator() +
+                "Status: {Available}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "(20)" + System.lineSeparator()+
+                "Title: How to code in scheme"+ System.lineSeparator()+
+                "Author: Lord Sean Benjamin XII"+ System.lineSeparator()+
+                "Status: {Available}"+ System.lineSeparator()+
+                "<=====------------<>------------=====>" + System.lineSeparator() + System.lineSeparator() +
+                "What book would you like to borrow?" + System.lineSeparator() +
+                "_-------:=|{[BOOK DETAILS]}|=:-------_" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Status: {On Hold}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "Confirm Borrow (Y/N)" + System.lineSeparator() +
+                "Would you like to place a hold for position (1) (Y/N): " +System.lineSeparator() +
+                "You have successfully been added to the hold queue" + System.lineSeparator();
+        assertTrue(expectedOut.startsWith(systemOutStream.toString()), "");
+
+    }
+    @Test
+    @DisplayName("Testing borrow result message from negative flow with invalid hold selection ")
+    void RESP_14_test_04() {
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        User user = userList.getUser(0);
+        catalogue.getBook(0).setAvailablity(1);
+        String SimUserIn = "1\nY\n2\nY\n";
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        user.borrowBook(catalogue.getBook(0),userInput);
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+        Library.borrowState(uiHandler,user,catalogue,userInput);
+        String expectedOut = "[NUMBER OF BORROWED BOOKS 1]" + System.lineSeparator()
+                + System.lineSeparator() +
+                "_------:=|{[BOOK SELECTION]}|=:------_" +System.lineSeparator() +
+                "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" +System.lineSeparator() +
+                "Author: Dennis Bartholomew III" +System.lineSeparator() +
+                "Status: {Checked Out}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(2)" + System.lineSeparator() +
+                "Title: How to train Pigeons: A guide to flight" +System.lineSeparator() +
+                "Author: Birdy McBorderman" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(3)" + System.lineSeparator() +
+                "Title: Day Drinking: How to do it & How not to stop" +System.lineSeparator() +
+                "Author: Ann Alkelhoul Adick" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(4)" + System.lineSeparator() +
+                "Title: Sacrificial Birds and how to raise them" +System.lineSeparator() +
+                "Author: Birdy McBorderman" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(5)" + System.lineSeparator() +
+                "Title: Summoning Rituals: Beginner Edition" +System.lineSeparator() +
+                "Author: Alvin Evil" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(6)" + System.lineSeparator() +
+                "Title: How to program Tron & Make it a movie" +System.lineSeparator() +
+                "Author: Bill Adams & Steven Lisberger" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(7)" + System.lineSeparator() +
+                "Title: How to enter old arcade machines" +System.lineSeparator() +
+                "Author: Sam Flynn" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(8)" + System.lineSeparator() +
+                "Title: The cunning and witty emaculations of sophisticated Gentlemen" +System.lineSeparator() +
+                "Author: Sir Tophattington of Florence the III" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(9)" + System.lineSeparator() +
+                "Title: How to train dragons: a guide to owning house geckos" +System.lineSeparator() +
+                "Author: Lisa Lizard" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(10)" + System.lineSeparator() +
+                "Title: The Murderizing Mutilator Strikes back" +System.lineSeparator() +
+                "Author: Stephan Queen" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(11)" + System.lineSeparator() +
+                "Title: A sudsy and cleaning story" +System.lineSeparator() +
+                "Author: Mr. Clean" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(12)" + System.lineSeparator() +
+                "Title: Trains and sewing machines" +System.lineSeparator() +
+                "Author: Imogen Heap" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(13)" + System.lineSeparator() +
+                "Title: How to sample someone else's song" +System.lineSeparator() +
+                "Author: Jason D" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(14)" + System.lineSeparator() +
+                "Title: Burning Bridges: a guide to messy relationships" +System.lineSeparator() +
+                "Author: alisha McHomewrecker" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(15)" + System.lineSeparator() +
+                "Title: 10 dos and donts of eating burritos" +System.lineSeparator() +
+                "Author: Ieym Phatt" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(16)" + System.lineSeparator() +
+                "Title: A Guide on Exterminating Gnomes" +System.lineSeparator() +
+                "Author: A.R Jr. Mcdavid" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(17)" + System.lineSeparator() +
+                "Title: Trains and their inner workings" +System.lineSeparator() +
+                "Author: Thomas D.A. Tank" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(18)" + System.lineSeparator() +
+                "Title: How to download RAM" +System.lineSeparator() +
+                "Author: Eugine McGullible" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(19)" + System.lineSeparator() +
+                "Title: Wizard Spells for beginners: pyrokinesis edition" +System.lineSeparator() +
+                "Author: G. Grey" +System.lineSeparator() +
+                "Status: {Available}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "(20)" + System.lineSeparator()+
+                "Title: How to code in scheme"+ System.lineSeparator()+
+                "Author: Lord Sean Benjamin XII"+ System.lineSeparator()+
+                "Status: {Available}"+ System.lineSeparator()+
+                "<=====------------<>------------=====>" + System.lineSeparator() + System.lineSeparator() +
+                "What book would you like to borrow?" + System.lineSeparator() +
+                "_-------:=|{[BOOK DETAILS]}|=:-------_" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Status: {Checked Out}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "Confirm Borrow (Y/N)" + System.lineSeparator() +
+                "You already have this book checked out" + System.lineSeparator() +
+                "You cannot place a hold on this book" + System.lineSeparator() + System.lineSeparator() +
+                "_------:=|{[BOOK SELECTION]}|=:------_" +System.lineSeparator() +
+                "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" +System.lineSeparator() +
+                "Author: Dennis Bartholomew III" +System.lineSeparator() +
+                "Status: {Checked Out}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(2)" + System.lineSeparator() +
+                "Title: How to train Pigeons: A guide to flight" +System.lineSeparator() +
+                "Author: Birdy McBorderman" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(3)" + System.lineSeparator() +
+                "Title: Day Drinking: How to do it & How not to stop" +System.lineSeparator() +
+                "Author: Ann Alkelhoul Adick" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(4)" + System.lineSeparator() +
+                "Title: Sacrificial Birds and how to raise them" +System.lineSeparator() +
+                "Author: Birdy McBorderman" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(5)" + System.lineSeparator() +
+                "Title: Summoning Rituals: Beginner Edition" +System.lineSeparator() +
+                "Author: Alvin Evil" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(6)" + System.lineSeparator() +
+                "Title: How to program Tron & Make it a movie" +System.lineSeparator() +
+                "Author: Bill Adams & Steven Lisberger" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(7)" + System.lineSeparator() +
+                "Title: How to enter old arcade machines" +System.lineSeparator() +
+                "Author: Sam Flynn" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(8)" + System.lineSeparator() +
+                "Title: The cunning and witty emaculations of sophisticated Gentlemen" +System.lineSeparator() +
+                "Author: Sir Tophattington of Florence the III" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(9)" + System.lineSeparator() +
+                "Title: How to train dragons: a guide to owning house geckos" +System.lineSeparator() +
+                "Author: Lisa Lizard" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(10)" + System.lineSeparator() +
+                "Title: The Murderizing Mutilator Strikes back" +System.lineSeparator() +
+                "Author: Stephan Queen" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(11)" + System.lineSeparator() +
+                "Title: A sudsy and cleaning story" +System.lineSeparator() +
+                "Author: Mr. Clean" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(12)" + System.lineSeparator() +
+                "Title: Trains and sewing machines" +System.lineSeparator() +
+                "Author: Imogen Heap" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(13)" + System.lineSeparator() +
+                "Title: How to sample someone else's song" +System.lineSeparator() +
+                "Author: Jason D" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(14)" + System.lineSeparator() +
+                "Title: Burning Bridges: a guide to messy relationships" +System.lineSeparator() +
+                "Author: alisha McHomewrecker" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(15)" + System.lineSeparator() +
+                "Title: 10 dos and donts of eating burritos" +System.lineSeparator() +
+                "Author: Ieym Phatt" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(16)" + System.lineSeparator() +
+                "Title: A Guide on Exterminating Gnomes" +System.lineSeparator() +
+                "Author: A.R Jr. Mcdavid" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(17)" + System.lineSeparator() +
+                "Title: Trains and their inner workings" +System.lineSeparator() +
+                "Author: Thomas D.A. Tank" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(18)" + System.lineSeparator() +
+                "Title: How to download RAM" +System.lineSeparator() +
+                "Author: Eugine McGullible" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" +System.lineSeparator() +
+                "(19)" + System.lineSeparator() +
+                "Title: Wizard Spells for beginners: pyrokinesis edition" +System.lineSeparator() +
+                "Author: G. Grey" +System.lineSeparator() +
+                "Status: {Available}" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "(20)" + System.lineSeparator()+
+                "Title: How to code in scheme"+ System.lineSeparator()+
+                "Author: Lord Sean Benjamin XII"+ System.lineSeparator()+
+                "Status: {Available}"+ System.lineSeparator()+
+                "<=====------------<>------------=====>" + System.lineSeparator() + System.lineSeparator() +
+                "What book would you like to borrow?" + System.lineSeparator() +
+                "_-------:=|{[BOOK DETAILS]}|=:-------_" + System.lineSeparator() +
+                "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
+                "Author: Birdy McBorderman" + System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() +
+                "Confirm Borrow (Y/N)" + System.lineSeparator() +
+                "You have successfully borrowed: " + catalogue.getBook(1).getTitle() + System.lineSeparator()+
+                "It is due: " + catalogue.getBook(1).getDueDate() + System.lineSeparator();
+        assertTrue(expectedOut.startsWith(systemOutStream.toString()), "");
+    }
+
+
+
 
 
 }
