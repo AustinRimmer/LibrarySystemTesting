@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -2113,6 +2115,12 @@ public class IOTest {
         String SimUserIn = "";
         Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
 
+
+        //added for refac of tests to use actual system time not string of it
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String expectedDueDate = currentDate.plusDays(14).format(formatter);
+
         UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
         user.borrowBook(catalogue.getBook(0),userInput);
         user.borrowBook(catalogue.getBook(1),userInput);
@@ -2121,12 +2129,12 @@ public class IOTest {
                 "(1)" + System.lineSeparator() +
                 "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
                 "Author: Dennis Bartholomew III"+ System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: " + expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() +
                 "(2)" + System.lineSeparator() +
                 "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
                 "Author: Birdy McBorderman" + System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: " + expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator();
         assertEquals(systemOutStream.toString(), testOut);
     }
@@ -2166,6 +2174,11 @@ public class IOTest {
         String SimUserIn = "1\nY";
         Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
 
+        //added for refac of tests to use actual system time not string of it
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String expectedDueDate = currentDate.plusDays(14).format(formatter);
+
         user.borrowBook(book1,userInput);
         user.borrowBook(book2,userInput);
         UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
@@ -2174,12 +2187,12 @@ public class IOTest {
                 "(1)" + System.lineSeparator() +
                 "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
                 "Author: Dennis Bartholomew III" + System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: "+ expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() +
                 "(2)" + System.lineSeparator() +
                 "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
                 "Author: Birdy McBorderman" + System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: " + expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() +
                 System.lineSeparator() +
                 "What book would you like to return?" + System.lineSeparator() +
@@ -2208,6 +2221,11 @@ public class IOTest {
         String SimUserIn = "0\n1\nY";
         Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
 
+        //added for refac of tests to use actual system time not string of it
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String expectedDueDate = currentDate.plusDays(14).format(formatter);
+
         user.borrowBook(book1,userInput);
         user.borrowBook(book2,userInput);
         UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
@@ -2216,12 +2234,12 @@ public class IOTest {
                 "(1)" + System.lineSeparator() +
                 "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
                 "Author: Dennis Bartholomew III" + System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: " + expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() +
                 "(2)" + System.lineSeparator() +
                 "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
                 "Author: Birdy McBorderman" + System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: "+ expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() +
                 System.lineSeparator() +
                 "What book would you like to return?" + System.lineSeparator() +
@@ -2230,12 +2248,12 @@ public class IOTest {
                 "(1)" + System.lineSeparator() +
                 "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
                 "Author: Dennis Bartholomew III" + System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: " + expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() +
                 "(2)" + System.lineSeparator() +
                 "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
                 "Author: Birdy McBorderman" + System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: " + expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() +
                 System.lineSeparator() +
                 "What book would you like to return?" + System.lineSeparator() +
@@ -2264,6 +2282,12 @@ public class IOTest {
         String SimUserIn = "1\nN\n1\nY";
         Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
 
+
+        //added for refac of tests to use actual system time not string of it
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String expectedDueDate = currentDate.plusDays(14).format(formatter);
+
         user.borrowBook(book1,userInput);
         user.borrowBook(book2,userInput);
         UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
@@ -2272,12 +2296,12 @@ public class IOTest {
                 "(1)" + System.lineSeparator() +
                 "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
                 "Author: Dennis Bartholomew III" + System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: " + expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() +
                 "(2)" + System.lineSeparator() +
                 "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
                 "Author: Birdy McBorderman" + System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: " + expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() +
                 System.lineSeparator() +
                 "What book would you like to return?" + System.lineSeparator() +
@@ -2291,12 +2315,12 @@ public class IOTest {
                 "(1)" + System.lineSeparator() +
                 "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
                 "Author: Dennis Bartholomew III" + System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: " + expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() +
                 "(2)" + System.lineSeparator() +
                 "Title: How to train Pigeons: A guide to flight" + System.lineSeparator() +
                 "Author: Birdy McBorderman" + System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: "  + expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() +
                 System.lineSeparator() +
                 "What book would you like to return?" + System.lineSeparator() +
@@ -2401,6 +2425,12 @@ public class IOTest {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outStream));
 
+
+        //added for refac of tests to use actual system time not string of it
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String expectedDueDate = currentDate.plusDays(14).format(formatter);
+
         Thread mainThread = new Thread(() -> {
             try {
                 Library.main(new String[]{});
@@ -2427,7 +2457,7 @@ public class IOTest {
         assertTrue(output.contains("_------:=|{[BORROWED BOOKS]}|=:------_" +System.lineSeparator() + "(1)" + System.lineSeparator() +
                 "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
                 "Author: Dennis Bartholomew III" + System.lineSeparator() +
-                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "Due Date: " + expectedDueDate + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() )); //holds stay after logout and back in
         assertTrue(output.contains( "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator())); //Testing to make sure it goes back to availability and is actually looping
