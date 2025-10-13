@@ -222,7 +222,7 @@ public class IOTest {
     }
     @Test
     @DisplayName("Testing user system operation prompt msg for valid choice")
-    void RESP_09_test_01(){
+    void RESP_08_test_01(){
         String SimUserIn = "1";
         User expectedSessionUser = new User("austinrimmer","p@55w0rd");
         int returnedInt = 0;
@@ -238,24 +238,8 @@ public class IOTest {
                 "<=====------------<>------------=====>" + System.lineSeparator() ,systemOutStream.toString());
     }
     @Test
-    @DisplayName("Testing that systemOperationPrompt returns user choice correctly")
-    void RESP_09_test_05(){
-        String SimUserIn = "3";
-        User expectedSessionUser = new User("austinrimmer","p@55w0rd");
-        int returnedInt = 0;
-        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
-        InitializeUserList initializeUserList = new InitializeUserList();
-        UserList userList = initializeUserList.initializeUserList();
-        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
-
-        returnedInt = Library.systemOperationInPrompt(userInput,uiHandler,userList);
-
-        //checking for validation boolean return
-        assertEquals(returnedInt, 3);
-    }
-    @Test
     @DisplayName("Testing user system operation prompt msg for invalid choices ending with valid (to exit while loop and be able to test)")
-    void RESP_09_test_02(){
+    void RESP_08_test_02(){
 
         String SimUserIn = "a\n a\n@\n4\n1";
         User expectedSessionUser = new User("austinrimmer","p@55w0rd");
@@ -277,7 +261,7 @@ public class IOTest {
     }
     @Test
     @DisplayName("Boundary Testing user system operation prompt msg for valid choice 2 ")
-    void RESP_09_test_03(){
+    void RESP_08_test_03(){
         String SimUserIn = "2";
         User expectedSessionUser = new User("austinrimmer","p@55w0rd");
         int returnedInt = 0;
@@ -294,7 +278,7 @@ public class IOTest {
     }
     @Test
     @DisplayName("Boundary Testing user system operation prompt msg for valid choice 3 ")
-    void RESP_09_test_04(){
+    void RESP_08_test_04(){
 
         String SimUserIn = "3";
         User expectedSessionUser = new User("austinrimmer","p@55w0rd");
@@ -309,6 +293,22 @@ public class IOTest {
         //checking for validation boolean return
         assertEquals( "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
                 "<=====------------<>------------=====>" + System.lineSeparator() ,systemOutStream.toString());
+    }
+    @Test
+    @DisplayName("Testing that systemOperationPrompt returns user choice correctly")
+    void RESP_08_test_05(){
+        String SimUserIn = "3";
+        User expectedSessionUser = new User("austinrimmer","p@55w0rd");
+        int returnedInt = 0;
+        Scanner userInput = new Scanner(new ByteArrayInputStream(SimUserIn.getBytes()));
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+        UserIOHandler uiHandler = new UserIOHandler(userInput, userList);
+
+        returnedInt = Library.systemOperationInPrompt(userInput,uiHandler,userList);
+
+        //checking for validation boolean return
+        assertEquals(returnedInt, 3);
     }
     @Test
     @DisplayName("Testing borrow validation result on available book")
