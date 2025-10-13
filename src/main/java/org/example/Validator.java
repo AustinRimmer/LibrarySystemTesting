@@ -82,6 +82,7 @@ public class Validator {
         }
         //if book was returned and current user is first in queue they are able to check it out
         if(book.getAvailablity() == -1 && book.getHolder(0).equals(user.getUsername())){
+            book.setAvailablity(1);
             return 1;
         }
         else if(book.getAvailablity() == -1 && !book.getHolder(0).equals(user.getUsername())){

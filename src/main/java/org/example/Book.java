@@ -54,5 +54,8 @@ public class Book {
     public void resetDueDate(){
         dueDate = "NOT CHECKED OUT";
     }
+    public void removeFromHoldQueue(User user){
+        holdQueue.remove(user.getUsername());
+    }
 
 }

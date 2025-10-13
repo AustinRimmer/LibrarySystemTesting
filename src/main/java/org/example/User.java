@@ -40,6 +40,7 @@ public class User {
             borrowedBooks.add(book);
             book.setAvailablity(0);
             book.calculateDueDate();
+            book.removeFromHoldQueue(this);
         }
         if(validBorrow == 0){
             addBookToOnHoldBooks(book);
@@ -53,7 +54,7 @@ public class User {
             book.setAvailablity(1);
             book.resetDueDate();
         }
-        if(book.getNumberOfHolders() != 0){
+        else if(book.getNumberOfHolders() != 0){
             book.setAvailablity(-1);
             book.resetDueDate();
             //ignoring UC here since it contradicts itself constantly, it will be set to on Hold, and the user first in hold queue can borrow it
