@@ -2311,6 +2311,63 @@ public class IOTest {
         assertTrue(expectedOut.startsWith(systemOutStream.toString()), "");
     }
     @Test
+    @DisplayName("boundary testing flow of user1 borrow, user 2 place hold, user 1 return, user two borrow, user 2 return then check book avail ")
+    void RESP_17_test_04(){
+        //basically the error i am now testing for is propper book availability after multiple returns and borrows on the same book
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        User user1 = userList.getUser(0);
+        User user2 = userList.getUser(1);
+        Book book1 = catalogue.getBook(19); // "How to code in scheme"
+
+
+        //user1 borrow
+        Scanner userInput1 = new Scanner(new ByteArrayInputStream("1\nY".getBytes()));
+        //user2 hold
+        Scanner userInput2 = new Scanner(new ByteArrayInputStream("1\nY\nY".getBytes()));
+        //user1 return
+        Scanner userInput3 = new Scanner(new ByteArrayInputStream("1\nY".getBytes()));
+        //user2 borrow (after hold)
+        Scanner userInput4 = new Scanner(new ByteArrayInputStream("1\nY".getBytes()));
+        //user2 return
+        Scanner userInput5 = new Scanner(new ByteArrayInputStream("1\nY".getBytes()));
+
+        UserIOHandler uiHandler1 = new UserIOHandler(userInput1, userList);
+        UserIOHandler uiHandler2 = new UserIOHandler(userInput2, userList);
+        UserIOHandler uiHandler3 = new UserIOHandler(userInput3, userList);
+        UserIOHandler uiHandler4 = new UserIOHandler(userInput4, userList);
+        UserIOHandler uiHandler5 = new UserIOHandler(userInput5, userList);
+
+
+        Library.borrowState(uiHandler1, user1, catalogue, userInput1);
+
+        Library.borrowState(uiHandler2, user2, catalogue, userInput2);
+
+        Library.returnState(uiHandler3, user1, catalogue, userInput3);
+
+        Library.borrowState(uiHandler4, user2, catalogue, userInput4);
+
+        Library.returnState(uiHandler5, user2, catalogue, userInput5);
+
+        UserIOHandler finalUiHandler = new UserIOHandler(new Scanner(System.in), userList);
+        finalUiHandler.dispAllBooks(catalogue, user2);
+
+        String output = systemOutStream.toString();
+        assertTrue(output.contains( "Confirm Return (Y/N)" + System.lineSeparator() +
+                "You have successfully returned The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                 System.lineSeparator() +
+                "_------:=|{[BOOK SELECTION]}|=:------_" + System.lineSeparator() +
+                "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Status: {Available}"+ System.lineSeparator()));
+
+    }
+
+    @Test
     @DisplayName("Testing user being notified of sucessfull logout")
     void RESP_18_test_01(){
         InitializeLibrary library = new InitializeLibrary();
