@@ -5,9 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -2326,10 +2324,62 @@ public class IOTest {
         Library.logoutState(uiHandler,userList.getUser(0),catalogue,userInput);
         assertEquals("You have successfully been logged out..." + System.lineSeparator() ,systemOutStream.toString());
     }
+    @Test
+    @DisplayName("Boundary Testing logging in borrowing and out then logging back in and checking holds (testing return to availability loop)")
+    void RESP_20_test_01() throws Exception {
+        InitializeLibrary library = new InitializeLibrary();
+        Catalogue catalogue = library.initializeLibrary();
+        InitializeUserList initializeUserList = new InitializeUserList();
+        UserList userList = initializeUserList.initializeUserList();
+
+        //piped streams so my test doesnt throw errors when passing
+        PipedOutputStream pos = new PipedOutputStream();
+        PipedInputStream pis = new PipedInputStream(pos);
+        System.setIn(pis);
+
+        String SimUserIn = "austin\n1@aaa\n1\n1\nY\n3\naustin\n1@aaa\n2\n1\nY";
+        pos.write(SimUserIn.getBytes());
+        pos.flush();
+
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outStream));
+
+        Thread mainThread = new Thread(() -> {
+            try {
+                Library.main(new String[]{});
+            } catch (Exception ignored) {
+
+            }
+        });
+        mainThread.start();
+        Thread.sleep(40);
+        pos.close();
+        mainThread.join();
+        String output = outStream.toString();
+        assertTrue(output.contains("username")); //does auth
+        assertTrue(output.contains( "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator())); //Testing to make sure it goes back to availability and is actually looping
+        assertTrue(output.contains("_------:=|{[BOOK SELECTION]}|=:------_"));//goes to book select
+        assertTrue(output.contains("(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" +System.lineSeparator() +
+                "Author: Dennis Bartholomew III" +System.lineSeparator() +
+                "Status: {Available}" +System.lineSeparator() ));//shows books
+        assertTrue(output.contains("Confirm Borrow (Y/N)"));
+        assertTrue(output.contains( "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator())); //Testing to make sure it goes back to availability and is actually looping
+        assertTrue(output.contains("_------:=|{[BORROWED BOOKS]}|=:------_" +System.lineSeparator() + "(1)" + System.lineSeparator() +
+                "Title: The Miscellaneous Mis-adventures of Captain Borqueefious" + System.lineSeparator() +
+                "Author: Dennis Bartholomew III" + System.lineSeparator() +
+                "Due Date: 2025-10-26" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator() )); //holds stay after logout and back in
+        assertTrue(output.contains( "-----:=|{[SYSTEM OPERATIONS]}|=:------" + System.lineSeparator() + "(1) borrow a book" + System.lineSeparator() + "(2) return a book" + System.lineSeparator() + "(3) logout" + System.lineSeparator() +
+                "<=====------------<>------------=====>" + System.lineSeparator())); //Testing to make sure it goes back to availability and is actually looping
 
 
+        System.setOut(System.out);
+        System.setIn(System.in);
 
-
+    }
 }
 
 
