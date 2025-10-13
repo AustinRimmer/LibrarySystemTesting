@@ -75,6 +75,54 @@ public class AcceptanceTest{
 
         lib.logoutState(uiHandler2b, userList.getUser(4), catalogue, user2Scanner2);
     }
+    @Test
+    @DisplayName("Initialization and Authentication with Error Handling")
+    void A_TEST_02(){
+        Library lib = new Library();
+        InitializeLibrary initLib = new InitializeLibrary();
+        Catalogue catalogue = initLib.initializeLibrary();
+        InitializeUserList initUserList = new InitializeUserList();
+        UserList userList = initUserList.initializeUserList();
+
+        //precons
+        assertEquals(20, catalogue.getCatalogueSize(), "system should start with 20 books");
+        assertEquals(3, userList.getNumberOfUsers(), "system should start with 3 users.");
+
+        //valid login
+        String validLoginInput = "austin\nP@55word\n";
+        Scanner validLoginScanner = new Scanner(new ByteArrayInputStream(validLoginInput.getBytes()));
+        UserIOHandler uiHandler = new UserIOHandler(validLoginScanner, userList);
+
+        //init session
+        lib.initializeSessionHolder(validLoginScanner, uiHandler, userList);
+
+        //logout
+        String logoutInput = "";
+        Scanner logoutScanner = new Scanner(new ByteArrayInputStream(logoutInput.getBytes()));
+        lib.logoutState(uiHandler, userList.getUser(3), catalogue, logoutScanner);
+
+        //invalid login, followed by correct stuff entered on reprompt
+        String invalidLoginInput = "wayTooLongOfAUserName\nnoNumbers\nnewUser\np@55word\n";
+        Scanner invalidLoginScanner = new Scanner(new ByteArrayInputStream(invalidLoginInput.getBytes()));
+        UserIOHandler uiHandlerInvalid = new UserIOHandler(invalidLoginScanner, userList);
+
+        ByteArrayOutputStream systemOut = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(systemOut));
+
+        //init session
+        lib.initializeSessionHolder(invalidLoginScanner, uiHandlerInvalid, userList);
+
+        //restore
+        System.setOut(originalOut);
+
+        String output = systemOut.toString();
+        //testing outs, you wont be able to see them
+        assertTrue(output.contains("ERROR: username is too long") && output.contains("ERROR: password does not contain any digits") && output.contains("ERROR: password does not contain any special characters") && output.contains("Please try again..."),
+                "system displays an error message when invalid credentials are entered");
+
+        assertTrue(output.contains("User Validated: welcome...") , "System should allow retry and succeed after valid credentials are entered.");
+    }
 }
 
 
