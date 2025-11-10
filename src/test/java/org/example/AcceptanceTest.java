@@ -75,6 +75,7 @@ public class AcceptanceTest{
 
         lib.logoutState(uiHandler2b, userList.getUser(4), catalogue, user2Scanner2);
     }
+    //changed as per A2 specs
     @Test
     @DisplayName("Initialization and Authentication with Error Handling")
     void A_TEST_02(){
@@ -118,7 +119,7 @@ public class AcceptanceTest{
 
         String output = systemOut.toString();
         //testing outs, you wont be able to see them
-        assertTrue(output.contains("ERROR: username is too long") && output.contains("ERROR: password does not contain any digits") && output.contains("ERROR: password does not contain any special characters") && output.contains("Please try again..."),
+        assertTrue(output.contains("ERROR: username is too long") && output.contains("ERROR: password does not contain any digits") && output.contains("Please try again..."),
                 "system displays an error message when invalid credentials are entered");
 
         assertTrue(output.contains("User Validated: welcome...") , "System should allow retry and succeed after valid credentials are entered.");

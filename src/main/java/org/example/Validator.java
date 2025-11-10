@@ -20,7 +20,8 @@ public class Validator {
 
     public static boolean validatePassword(String password) {
         //must be > 4 chars, must have one special char, one number, and at least 1 letter
-        boolean hasSpecialChar = false;
+        //new rules must have 4 chars and 3 digits i guess
+        //boolean hasSpecialChar = false;
         boolean hasLetter = false;
         boolean hasNumber = false;
         if (password.length() < 5) {
@@ -32,8 +33,11 @@ public class Validator {
                 hasLetter = true;
             } else if (Character.isDigit(c)) {
                 hasNumber = true;
+            /*
             } else {
                 hasSpecialChar = true;
+            }
+            */
             }
         }
         if (!hasLetter) {
@@ -42,10 +46,8 @@ public class Validator {
         if (!hasNumber) {
             System.out.println("ERROR: password does not contain any digits");
         }
-        if (!hasSpecialChar) {
-            System.out.println("ERROR: password does not contain any special characters");
-        }
-        return hasLetter && hasNumber && hasSpecialChar;
+
+        return hasLetter && hasNumber;
     }
 
     public static boolean validateUserOperationChoice(String userInput){

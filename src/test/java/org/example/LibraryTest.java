@@ -86,16 +86,16 @@ public class LibraryTest {
     void RESP_03_test_02(){
         InitializeUserList initializeUserList = new InitializeUserList();
         UserList userList = initializeUserList.initializeUserList();
-        boolean tooShort = Validator.validatePassword("12@a");
-        boolean noNumbers = Validator.validatePassword("ab@aazay");
-        boolean noSpecial = Validator.validatePassword("ab1aazay");
-        boolean noLetters = Validator.validatePassword("12@12345");
+        boolean tooShort = Validator.validatePassword("12a");
+        boolean noNumbers = Validator.validatePassword("abaazay");
+        //boolean noSpecial = Validator.validatePassword("ab1aazay");
+        boolean noLetters = Validator.validatePassword("1212345");
 
 
         boolean justRight = Validator.validatePassword("p@55w0rd");
         assertEquals(false,tooShort);
         assertEquals(false,noNumbers);
-        assertEquals(false,noSpecial);
+        //assertEquals(false,noSpecial);
         assertEquals(false,noLetters);
         assertEquals(true,justRight);
     }

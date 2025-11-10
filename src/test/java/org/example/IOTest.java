@@ -46,7 +46,8 @@ public class IOTest {
         String expectedOut = "ERROR: password does not contain any digits" + System.lineSeparator();
         assertEquals(expectedOut, systemOutStream.toString());
     }
-
+    //No longer required logic as per A2 specs
+    /*
     @Test
     @DisplayName("check for correct error messages for password does not contain any special characters")
     void RESP_03_test_05() {
@@ -56,6 +57,7 @@ public class IOTest {
         String expectedOut = "ERROR: password does not contain any special characters" + System.lineSeparator();
         assertEquals(expectedOut, systemOutStream.toString());
     }
+    */
 
     @Test
     @DisplayName("check for correct error messages for password does not contain any letters")
@@ -76,13 +78,13 @@ public class IOTest {
         String expectedOut = "ERROR: username is too long" + System.lineSeparator();
         assertEquals(expectedOut, systemOutStream.toString());
     }
-
+    //changed
     @Test
     @DisplayName("check for correct error messages for existing username")
     void RESP_03_test_08() {
         InitializeUserList initializeUserList = new InitializeUserList();
         UserList userList = initializeUserList.initializeUserList();
-        Validator.validateUsername("MrDavidman", userList);
+        Validator.validateUsername("alice", userList);
         String expectedOut = "ERROR: user already exists with this name" + System.lineSeparator();
         assertEquals(expectedOut, systemOutStream.toString());
 
