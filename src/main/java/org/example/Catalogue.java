@@ -13,7 +13,7 @@ public class Catalogue {
         catalogue.add(book);
     }
 
-    Book getBook(int index){
+    public Book getBook(int index){
         return catalogue.get(index);
     }
 

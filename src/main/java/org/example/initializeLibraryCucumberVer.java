@@ -4,7 +4,7 @@ public class initializeLibraryCucumberVer {
 
     Catalogue catalogue = new Catalogue();
 
-    public Catalogue initializeLibrary(){
+    public Catalogue initializeLibraryCucumberVer(){
         catalogue.addBook(new Book("The Great Gatsby", "Dennis Bartholomew III"));
         catalogue.addBook(new Book("To Kill a Mockingbird", "Birdy McBorderman"));
         catalogue.addBook(new Book("1984", "Ann Alkelhoul Adick"));

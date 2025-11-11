@@ -12,7 +12,7 @@ public class UserList {
         userList.add(user);
     }
 
-    User getUser(int index){
+    public User getUser(int index){
         return userList.get(index);
     }
 
