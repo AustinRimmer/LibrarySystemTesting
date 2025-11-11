@@ -19,6 +19,47 @@ public class LibrarySteps {
     Catalogue catalogue = lib.initializeLibrary();
     UserList userList = initializeUserList.initializeUserList();
 
+    private int getBook(String bookTitle){
+        int bookIndex = -1;
+
+        switch (bookTitle) {
+            case "The Great Gatsby" -> bookIndex = 0;
+            case "To Kill a Mockingbird" -> bookIndex = 1;
+            case "1984" -> bookIndex = 2;
+            case "Pride and Prejudice" -> bookIndex = 3;
+            case "The Hobbit" -> bookIndex = 4;
+            case "Harry Potter" -> bookIndex = 5;
+            case "The Catcher in the Rye" -> bookIndex = 6;
+            case "Animal Farm" -> bookIndex = 7;
+            case "Lord of the Flies" -> bookIndex = 8;
+            case "Jane Eyre" -> bookIndex = 9;
+            case "Wuthering Heights" -> bookIndex = 10;
+            case "Moby Dick" -> bookIndex = 11;
+            case "The Odyssey" -> bookIndex = 12;
+            case "Hamlet" -> bookIndex = 13;
+            case "War and Peace" -> bookIndex = 14;
+            case "The Divine Comedy" -> bookIndex = 15;
+            case "Crime and Punishment" -> bookIndex = 16;
+            case "Don Quixote" -> bookIndex = 17;
+            case "The Iliad" -> bookIndex = 18;
+            case "Ulysses" -> bookIndex = 19;
+        }
+        return bookIndex;
+    }
+
+    private int getUser(String username){
+        int user = -1;
+        if(username.equals("Alice")){
+            user = 0;
+        }
+        if(username.equals("Bob")){
+            user = 1;
+        }
+        if(username.equals("Charlie")){
+            user = 2;
+        }
+        return user;
+    }
 
     @Given("I have an initialized library")
     public void i_have_an_initialized_library(){
@@ -44,90 +85,21 @@ public class LibrarySteps {
     }
     @When("{string} borrows {string}")
     public void user_borrows_book(String username, String book) {
-        int user = -1;
-        if(username.equals("Alice")){
-            user = 0;
-        }
-        if(username.equals("Bob")){
-            user = 1;
-        }
-        if(username.equals("Charlie")){
-            user = 2;
-        }
-
-        int bookIndex = -1;
-
-        switch (book) {
-            case "The Great Gatsby" -> bookIndex = 0;
-            case "To Kill a Mockingbird" -> bookIndex = 1;
-            case "1984" -> bookIndex = 2;
-            case "Pride and Prejudice" -> bookIndex = 3;
-            case "The Hobbit" -> bookIndex = 4;
-            case "Harry Potter" -> bookIndex = 5;
-            case "The Catcher in the Rye" -> bookIndex = 6;
-            case "Animal Farm" -> bookIndex = 7;
-            case "Lord of the Flies" -> bookIndex = 8;
-            case "Jane Eyre" -> bookIndex = 9;
-            case "Wuthering Heights" -> bookIndex = 10;
-            case "Moby Dick" -> bookIndex = 11;
-            case "The Odyssey" -> bookIndex = 12;
-            case "Hamlet" -> bookIndex = 13;
-            case "War and Peace" -> bookIndex = 14;
-            case "The Divine Comedy" -> bookIndex = 15;
-            case "Crime and Punishment" -> bookIndex = 16;
-            case "Don Quixote" -> bookIndex = 17;
-            case "The Iliad" -> bookIndex = 18;
-            case "Ulysses" -> bookIndex = 19;
-        }
-
-        User crntUser = userList.getUser(user);
+        User crntUser = userList.getUser(getUser(username));
         Scanner user1Scanner = new Scanner(new ByteArrayInputStream(("Y\n").getBytes()));
-        crntUser.borrowBook(catalogue.getBook(bookIndex), user1Scanner);
+        crntUser.borrowBook(catalogue.getBook(getBook(book)), user1Scanner);
 
     }
     @When("{string} logs out")
     public void user_logs_out(String username) {
-        int user = -1;
-        if(username.equals("Alice")){
-            user = 0;
-        }
-        if(username.equals("Bob")){
-            user = 1;
-        }
-        if(username.equals("Charlie")){
-            user = 2;
-        }
-        User crntUser = userList.getUser(user);
+        User crntUser = userList.getUser(getUser(username));
         Scanner user1Scanner = new Scanner(new ByteArrayInputStream(("").getBytes()));
         UserIOHandler uiHandler = new UserIOHandler(user1Scanner, userList);
         library.logoutState(uiHandler,crntUser,catalogue,user1Scanner);
     }
     @Then("{string} is unavailable")
     public void book_is_unavailable(String book) {
-        int bookIndex = -1;
-        switch (book) {
-            case "The Great Gatsby" -> bookIndex = 0;
-            case "To Kill a Mockingbird" -> bookIndex = 1;
-            case "1984" -> bookIndex = 2;
-            case "Pride and Prejudice" -> bookIndex = 3;
-            case "The Hobbit" -> bookIndex = 4;
-            case "Harry Potter" -> bookIndex = 5;
-            case "The Catcher in the Rye" -> bookIndex = 6;
-            case "Animal Farm" -> bookIndex = 7;
-            case "Lord of the Flies" -> bookIndex = 8;
-            case "Jane Eyre" -> bookIndex = 9;
-            case "Wuthering Heights" -> bookIndex = 10;
-            case "Moby Dick" -> bookIndex = 11;
-            case "The Odyssey" -> bookIndex = 12;
-            case "Hamlet" -> bookIndex = 13;
-            case "War and Peace" -> bookIndex = 14;
-            case "The Divine Comedy" -> bookIndex = 15;
-            case "Crime and Punishment" -> bookIndex = 16;
-            case "Don Quixote" -> bookIndex = 17;
-            case "The Iliad" -> bookIndex = 18;
-            case "Ulysses" -> bookIndex = 19;
-        }
-        assertTrue(catalogue.getBook(bookIndex).getAvailablity() != 1);
+        assertTrue(catalogue.getBook(getBook(book)).getAvailablity() != 1);
     }
     @When("{string} returns {string}")
     public void user_returns_book(String username, String book) {
