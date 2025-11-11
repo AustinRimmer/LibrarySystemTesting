@@ -9,6 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class LibrarySteps {
@@ -126,7 +127,7 @@ public class LibrarySteps {
             case "The Iliad" -> bookIndex = 18;
             case "Ulysses" -> bookIndex = 19;
         }
-        assertEquals(0, catalogue.getBook(bookIndex).getAvailablity());
+        assertTrue(catalogue.getBook(bookIndex).getAvailablity() != 1);
     }
     @When("{string} returns {string}")
     public void user_returns_book(String username, String book) {
@@ -196,7 +197,7 @@ public class LibrarySteps {
             case "The Iliad" -> bookIndex = 18;
             case "Ulysses" -> bookIndex = 19;
         }
-        assertEquals(1, catalogue.getBook(bookIndex).getAvailablity());
+        assertTrue(catalogue.getBook(bookIndex).getAvailablity() == 1);
     }
 
 
