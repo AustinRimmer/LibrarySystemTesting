@@ -40,6 +40,7 @@ Feature: Library operations
     And "Bob" has 1 held books
 
     When "Charlie" logs in
+    Then "Charlie" is notified that a held book "The Great Gatsby" is available
     And "Charlie" borrows "The Great Gatsby"
     Then "Charlie" has 1 books borrowed
 
