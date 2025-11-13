@@ -11,7 +11,10 @@ Feature: Library operations
     And "Charlie" logs in
     Then "The Great Gatsby" is unavailable
 
-    When "Alice" returns "The Great Gatsby"
+
+    When "Charlie" logs out
+    And "Alice" logs in
+    And "Alice" returns "The Great Gatsby"
     And "Alice" logs out
     And "Charlie" logs in
     Then "The Great Gatsby" is available
