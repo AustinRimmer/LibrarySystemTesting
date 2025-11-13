@@ -1,5 +1,7 @@
 package steps;
 
+import io.cucumber.java.PendingException;
+import io.cucumber.java.en.And;
 import org.example.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -115,4 +117,37 @@ public class LibrarySteps {
     }
 
 
+    @Then("{string} is first in hold queue of {string}")
+    public void user_is_first_in_hold_queue_of_book(String username, String book) {
+        Book crntBook = catalogue.getBook(getBookIndex(book));
+        assertEquals(username.toLowerCase() + " ", crntBook.getHolder(0));
+    }
+
+    @Then("{string} is notified that a held book {string} is available")
+    public void user_is_notified_that_a_held_book_book_is_available(String username, String book) {
+        Book crntBook = catalogue.getBook(getBookIndex(book));
+        assertTrue((username.toLowerCase() + " ").equals( crntBook.getHolder(0)) && crntBook.getAvailablity() == -1);
+    }
+
+    @Then("{string} has {int} books borrowed")
+    public void user_has_number_books_borrowed(String username, int borrows) {
+        int numBorrows = userList.getUser(getUserIndex(username)).getNumberOfBorrowedBooks();
+        assertTrue(numBorrows == borrows);
+    }
+
+    @And("{string} has {int} held books")
+    public void user_has_held_books(String username, int holds) {
+        int numHolds = userList.getUser(getUserIndex(username)).getBooksOnHold().size();
+        assertTrue(numHolds == holds);
+    }
+
+    @And("all books are available")
+    public void all_books_are_available() {
+        for(int i = 0; i <catalogue.getCatalogueSize(); i++){
+            if(catalogue.getBook(i).getAvailablity() <= 0){
+                assertTrue(1 == 2);
+            }
+        }
+        assertTrue(1 == 1);
+    }
 }
