@@ -135,13 +135,13 @@ public class LibrarySteps {
         assertTrue(numBorrows == borrows);
     }
 
-    @And("{string} has {int} held books")
+    @Then("{string} has {int} held books")
     public void user_has_held_books(String username, int holds) {
         int numHolds = userList.getUser(getUserIndex(username)).getBooksOnHold().size();
         assertTrue(numHolds == holds);
     }
 
-    @And("all books are available")
+    @Then("all books are available")
     public void all_books_are_available() {
         for(int i = 0; i <catalogue.getCatalogueSize(); i++){
             if(catalogue.getBook(i).getAvailablity() <= 0){
