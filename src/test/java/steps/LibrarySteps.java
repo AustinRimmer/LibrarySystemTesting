@@ -99,9 +99,15 @@ public class LibrarySteps {
         UserIOHandler uiHandler = new UserIOHandler(user1Scanner, userList);
         library.logoutState(uiHandler,crntUser,catalogue,user1Scanner);
     }
-    @Then("{string} is unavailable")
-    public void book_is_unavailable(String book) {
-        assertTrue(catalogue.getBook(getBookIndex(book)).getAvailablity() != 1);
+    @Then("{string} is {string}")
+    public void book_is_status(String book, String status) {
+        if(status.equals("unavailable")){
+            assertTrue(catalogue.getBook(getBookIndex(book)).getAvailablity() != 1);
+        }
+        else{
+            assertTrue(catalogue.getBook(getBookIndex(book)).getAvailablity() == 1);
+        }
+
     }
     @When("{string} returns {string}")
     public void user_returns_book(String username, String book) {
@@ -111,11 +117,6 @@ public class LibrarySteps {
         crntUser.returnBook(catalogue.getBook(getBookIndex(book)));
 
     }
-    @Then("{string} is available")
-    public void book_is_available(String book) {
-        assertTrue(catalogue.getBook(getBookIndex(book)).getAvailablity() == 1);
-    }
-
 
     @Then("{string} is first in hold queue of {string}")
     public void user_is_first_in_hold_queue_of_book(String username, String book) {

@@ -9,15 +9,14 @@ Feature: Library operations
     And "Alice" borrows "The Great Gatsby"
     And "Alice" logs out
     And "Charlie" logs in
-    Then "The Great Gatsby" is unavailable
-
+    Then "The Great Gatsby" is "unavailable"
 
     When "Charlie" logs out
     And "Alice" logs in
     And "Alice" returns "The Great Gatsby"
     And "Alice" logs out
     And "Charlie" logs in
-    Then "The Great Gatsby" is available
+    Then "The Great Gatsby" is "available"
 
   Scenario: Multiple holds queue processing
     Given I have an initialized library
@@ -26,7 +25,7 @@ Feature: Library operations
     And "Charlie" logs in
     And "Charlie" borrows "The Great Gatsby"
     And "Charlie" logs out
-    Then "The Great Gatsby" is unavailable
+    Then "The Great Gatsby" is "unavailable"
     And "Charlie" is first in hold queue of "The Great Gatsby"
 
     When "Alice" logs in
