@@ -1,0 +1,405 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section {
+            margin: 25px 0;
+            padding: 20px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 8px 16px;
+            margin: 2px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+            .btn-primary:hover {
+                background: #0056b3;
+            }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+            .btn-success:hover {
+                background: #1e7e34;
+            }
+
+        .btn-warning {
+            background: #ffc107;
+            color: black;
+        }
+
+            .btn-warning:hover {
+                background: #e0a800;
+            }
+
+        .available {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .checked-out {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .on-hold {
+            color: #fd7e14;
+            font-weight: bold;
+        }
+
+        .notification {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .error {
+            color: #dc3545;
+            margin: 15px 0;
+            padding: 12px;
+            background: #f8d7da;
+            border-radius: 4px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .success {
+            color: #155724;
+            margin: 15px 0;
+            padding: 12px;
+            background: #d4edda;
+            border-radius: 4px;
+            border-left: 4px solid #28a745;
+        }
+
+        .user-info {
+            font-size: 16px;
+            color: #495057;
+        }
+
+            .user-info strong {
+                color: #007bff;
+            }
+
+        .logout-btn {
+            background: #6c757d;
+            color: white;
+            padding: 8px 16px;
+        }
+
+            .logout-btn:hover {
+                background: #545b62;
+            }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📚 Library Management System</h1>
+        <div class="user-info">
+            <span>Welcome, <strong id="usernameDisplay">User</strong></span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div id="notifications" class="section">
+        <h2>🔔 Notifications</h2>
+        <div id="notificationsContent">Loading notifications...</div>
+    </div>
+
+    <div class="section">
+        <h2>📖 My Borrowed Books (<span id="borrowedCount">0</span>/3)</h2>
+        <table id="borrowedBooks">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="4" style="text-align: center;">No books borrowed</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>📚 All Books</h2>
+        <table id="allBooks">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Status</th>
+                    <th>Hold Queue</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="5" style="text-align: center;">Loading books...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="message"></div>
+
+    <script>
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadDashboard();
+            setInterval(loadDashboard, 3000); // Refresh every 3 seconds
+        });
+
+        async function loadDashboard() {
+            try {
+                // Load user info and books
+                const [userResponse, booksResponse] = await Promise.all([
+                    fetch('/api/user/books'),
+                    fetch('/api/books')
+                ]);
+
+                if (!userResponse.ok) {
+                    window.location.href = '/';
+                    return;
+                }
+
+                const borrowedBooks = await userResponse.json();
+                const allBooks = await booksResponse.json();
+
+                // Update username display (extract from borrowed books response or maintain state)
+                if (borrowedBooks.username) {
+                    currentUser = borrowedBooks.username;
+                    document.getElementById('usernameDisplay').textContent = currentUser;
+                }
+
+                // Display borrowed books
+                const borrowedTbody = document.getElementById('borrowedBooks').querySelector('tbody');
+                borrowedTbody.innerHTML = '';
+
+                if (borrowedBooks.length === 0) {
+                    const row = borrowedTbody.insertRow();
+                    const cell = row.insertCell(0);
+                    cell.colSpan = 4;
+                    cell.textContent = 'No books borrowed';
+                    cell.style.textAlign = 'center';
+                    cell.style.color = '#6c757d';
+                } else {
+                    borrowedBooks.forEach((book, index) => {
+                        const row = borrowedTbody.insertRow();
+                        row.insertCell(0).textContent = book.title;
+                        row.insertCell(1).textContent = book.author;
+                        row.insertCell(2).textContent = book.dueDate;
+
+                        const actionCell = row.insertCell(3);
+                        const returnBtn = document.createElement('button');
+                        returnBtn.textContent = 'Return Book';
+                        returnBtn.className = 'btn-warning';
+                        returnBtn.onclick = () => returnBook(index);
+                        actionCell.appendChild(returnBtn);
+                    });
+                }
+
+                document.getElementById('borrowedCount').textContent = borrowedBooks.length;
+
+                // Display all books
+                const allBooksTbody = document.getElementById('allBooks').querySelector('tbody');
+                allBooksTbody.innerHTML = '';
+
+                allBooks.forEach((book, index) => {
+                    const row = allBooksTbody.insertRow();
+                    row.insertCell(0).textContent = book.title;
+                    row.insertCell(1).textContent = book.author;
+
+                    const statusCell = row.insertCell(2);
+                    let statusText = '';
+                    let statusClass = '';
+
+                    if (book.availability === 1) {
+                        statusText = 'Available';
+                        statusClass = 'available';
+                    } else if (book.availability === 0) {
+                        statusText = 'Checked Out';
+                        statusClass = 'checked-out';
+                    } else {
+                        statusText = 'On Hold';
+                        statusClass = 'on-hold';
+                    }
+
+                    statusCell.textContent = statusText;
+                    statusCell.className = statusClass;
+
+                    const holdersCell = row.insertCell(3);
+                    holdersCell.textContent = book.holders > 0 ? `${book.holders} holder(s)` : 'No holders';
+
+                    const actionCell = row.insertCell(4);
+                    const borrowBtn = document.createElement('button');
+
+                    if (book.availability === 1) {
+                        borrowBtn.textContent = 'Borrow';
+                        borrowBtn.className = 'btn-success';
+                    } else {
+                        borrowBtn.textContent = 'Place Hold';
+                        borrowBtn.className = 'btn-primary';
+                    }
+
+                    borrowBtn.onclick = () => borrowBook(index);
+                    actionCell.appendChild(borrowBtn);
+                });
+
+                // Load notifications
+                await loadNotifications();
+
+            } catch (error) {
+                console.error('Dashboard load error:', error);
+                showMessage('Error loading dashboard: ' + error.message, 'error');
+            }
+        }
+
+        async function borrowBook(bookId) {
+            try {
+                const response = await fetch(`/api/books/${bookId}/borrow`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const result = await response.json();
+                showMessage(result.message, result.success ? 'success' : 'error');
+                await loadDashboard();
+            } catch (error) {
+                showMessage('Error borrowing book: ' + error.message, 'error');
+            }
+        }
+
+        async function returnBook(bookIndex) {
+            try {
+                const response = await fetch(`/api/books/${bookIndex}/return`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const result = await response.json();
+                showMessage(result.message, result.success ? 'success' : 'error');
+                await loadDashboard();
+            } catch (error) {
+                showMessage('Error returning book: ' + error.message, 'error');
+            }
+        }
+
+        async function loadNotifications() {
+            try {
+                const response = await fetch('/api/user/holds');
+                const holds = await response.json();
+
+                const notificationsDiv = document.getElementById('notificationsContent');
+
+                if (holds.length === 0 || holds[0] === -2) {
+                    notificationsDiv.innerHTML = '<p>No notifications at this time.</p>';
+                } else {
+                    let hasNotifications = false;
+                    let notificationsHTML = '';
+
+                    holds.forEach((status, index) => {
+                        if (status === 1) {
+                            hasNotifications = true;
+                            notificationsHTML += `
+                                    <div class="notification">
+                                        <strong>Book Available!</strong> A book you have on hold is now available for borrowing.
+                                    </div>
+                                `;
+                        }
+                    });
+
+                    if (hasNotifications) {
+                        notificationsDiv.innerHTML = notificationsHTML;
+                    } else {
+                        notificationsDiv.innerHTML = '<p>No notifications at this time.</p>';
+                    }
+                }
+            } catch (error) {
+                console.error('Notifications load error:', error);
+                document.getElementById('notificationsContent').innerHTML = '<p>Error loading notifications</p>';
+            }
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = type;
+            setTimeout(() => {
+                messageDiv.textContent = '';
+                messageDiv.className = '';
+            }, 5000);
+        }
+
+        async function logout() {
+            try {
+                await fetch('/api/logout', { method: 'POST' });
+                window.location.href = '/';
+            } catch (error) {
+                console.error('Logout error:', error);
+                showMessage('Logout error: ' + error.message, 'error');
+            }
+        }
+    </script>
+</body>
+</html>
