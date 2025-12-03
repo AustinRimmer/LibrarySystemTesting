@@ -1,3 +1,4 @@
+//file server
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -8,12 +9,10 @@ const InitializeLibraryCucumberVer = require('./InitializeLibraryCucumberVer');
 const InitializeUserList = require('./InitializeUserList');
 const User = require('./User');
 
-// Initialize data
-const libraryInitializer = new InitializeLibraryCucumberVer();
-const userListInitializer = new InitializeUserList();
-
-let catalogue = libraryInitializer.initializeLibraryCucumberVer();
-let userList = userListInitializer.initializeUserList();
+let libraryInitializer = new InitializeLibraryCucumberVer();  // CHANGE TO 'let'
+let userListInitializer = new InitializeUserList();           // CHANGE TO 'let'
+let catalogue = libraryInitializer.initializeLibraryCucumberVer();  // 'let'
+let userList = userListInitializer.initializeUserList();            // 'let'
 let currentUser = null;
 
 // Middleware
@@ -61,18 +60,26 @@ app.get('/api/books', (req, res) => {
     const books = [];
     for (let i = 0; i < catalogue.getCatalogueSize(); i++) {
         const book = catalogue.getBook(i);
-        books.push({
+
+        // SIMPLE FIX: Access holdQueue directly
+        let firstHolder = null;
+        if (book.holdQueue && book.holdQueue.length > 0) {
+            firstHolder = book.holdQueue[0];
+        }
+
+        const bookData = {
             id: i,
             title: book.getTitle(),
             author: book.getAuthor(),
             availability: book.getAvailability(),
             dueDate: book.getDueDate(),
-            holders: book.getNumberOfHolders()
-        });
+            holders: book.getNumberOfHolders(),
+            firstHolder: firstHolder
+        };
+        books.push(bookData);
     }
     res.json(books);
 });
-
 app.post('/api/books/:id/borrow', (req, res) => {
     if (!currentUser) {
         return res.json({ success: false, message: "Not logged in" });
@@ -137,14 +144,29 @@ app.get('/api/user/holds', (req, res) => {
     res.json(holds);
 });
 
+app.get('/api/user/current', (req, res) => {
+    if (!currentUser) {
+        return res.json({ username: null });
+    }
+    res.json({
+        username: currentUser.getUsername(),
+        borrowedCount: currentUser.getNumberOfBorrowedBooks()
+    });
+});
+
+
 // Reset endpoint for Cypress tests
 app.post('/api/reset', (req, res) => {
-    // Reinitialize data
+    // COMPLETELY reinitialize everything
+    libraryInitializer = new InitializeLibraryCucumberVer();  // NEW instance
+    userListInitializer = new InitializeUserList();           // NEW instance
+
     catalogue = libraryInitializer.initializeLibraryCucumberVer();
     userList = userListInitializer.initializeUserList();
     currentUser = null;
     res.json({ success: true, message: "System reset" });
 });
+
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

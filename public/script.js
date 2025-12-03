@@ -1,4 +1,4 @@
-let currentUser = null;
+﻿let currentUser = null;
 
 // Login functionality
 if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
@@ -171,34 +171,6 @@ async function returnBook(bookIndex) {
         await loadDashboard();
     } catch (error) {
         showMessage('Error returning book: ' + error.message, 'error');
-    }
-}
-
-async function loadNotifications() {
-    try {
-        const response = await fetch('/api/user/holds');
-        const holds = await response.json();
-
-        const notificationsDiv = document.getElementById('notifications');
-        notificationsDiv.innerHTML = '<h2>Notifications</h2>';
-
-        // Ensure holds is an array
-        const holdsArray = Array.isArray(holds) ? holds : [];
-
-        if (holdsArray.length === 0 || holdsArray[0] === -2) {
-            notificationsDiv.innerHTML += '<p>No notifications</p>';
-        } else {
-            holdsArray.forEach((status, index) => {
-                if (status === 1) {
-                    const notification = document.createElement('div');
-                    notification.className = 'notification';
-                    notification.textContent = 'A book you have on hold is now available!';
-                    notificationsDiv.appendChild(notification);
-                }
-            });
-        }
-    } catch (error) {
-        console.error('Notifications load error:', error);
     }
 }
 

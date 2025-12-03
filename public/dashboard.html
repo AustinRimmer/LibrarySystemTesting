@@ -209,9 +209,16 @@
             await loadDashboard();
             setInterval(loadDashboard, 3000); // Refresh every 3 seconds
         });
-
         async function loadDashboard() {
             try {
+                const userInfoResponse = await fetch('/api/user/current');
+                const userInfo = await userInfoResponse.json();
+
+                // Update username display with real username
+                if (userInfo.username) {
+                    document.getElementById('usernameDisplay').textContent = userInfo.username;
+                }
+
                 // Load user info and books
                 const [userResponse, booksResponse] = await Promise.all([
                     fetch('/api/user/books'),
@@ -225,12 +232,6 @@
 
                 const borrowedBooks = await userResponse.json();
                 const allBooks = await booksResponse.json();
-
-                // Update username display (extract from borrowed books response or maintain state)
-                if (borrowedBooks.username) {
-                    currentUser = borrowedBooks.username;
-                    document.getElementById('usernameDisplay').textContent = currentUser;
-                }
 
                 // Display borrowed books
                 const borrowedTbody = document.getElementById('borrowedBooks').querySelector('tbody');
@@ -265,6 +266,11 @@
                 const allBooksTbody = document.getElementById('allBooks').querySelector('tbody');
                 allBooksTbody.innerHTML = '';
 
+                // Get current username for button logic
+                const currentUsername = document.getElementById('usernameDisplay').textContent.trim();
+                // Check if user has 3 books borrowed
+                const hasMaxBooks = borrowedBooks.length >= 3;
+
                 allBooks.forEach((book, index) => {
                     const row = allBooksTbody.insertRow();
                     row.insertCell(0).textContent = book.title;
@@ -294,10 +300,17 @@
                     const actionCell = row.insertCell(4);
                     const borrowBtn = document.createElement('button');
 
-                    if (book.availability === 1) {
+                    // SIMPLE VERSION:
+                    if (book.firstHolder === currentUsername && !hasMaxBooks) {
+                        // User is first in queue
+                        borrowBtn.textContent = 'Borrow';
+                        borrowBtn.className = 'btn-success';
+                    } else if (book.availability === 1 && !hasMaxBooks) {
+                        // Available book
                         borrowBtn.textContent = 'Borrow';
                         borrowBtn.className = 'btn-success';
                     } else {
+                        // All other cases
                         borrowBtn.textContent = 'Place Hold';
                         borrowBtn.className = 'btn-primary';
                     }
@@ -344,43 +357,59 @@
                 showMessage('Error returning book: ' + error.message, 'error');
             }
         }
-
         async function loadNotifications() {
             try {
-                const response = await fetch('/api/user/holds');
-                const holds = await response.json();
+                const [allBooksResponse, holdsResponse] = await Promise.all([
+                    fetch('/api/books'),
+                    fetch('/api/user/holds')
+                ]);
+
+                const allBooks = await allBooksResponse.json();
+                const holdsStatuses = await holdsResponse.json(); // 1 = available, 0 = still on hold, etc.
 
                 const notificationsDiv = document.getElementById('notificationsContent');
+                notificationsDiv.innerHTML = '<h2>Notifications</h2>';
 
-                if (holds.length === 0 || holds[0] === -2) {
-                    notificationsDiv.innerHTML = '<p>No notifications at this time.</p>';
-                } else {
-                    let hasNotifications = false;
-                    let notificationsHTML = '';
-
-                    holds.forEach((status, index) => {
-                        if (status === 1) {
-                            hasNotifications = true;
-                            notificationsHTML += `
-                                    <div class="notification">
-                                        <strong>Book Available!</strong> A book you have on hold is now available for borrowing.
-                                    </div>
-                                `;
-                        }
-                    });
-
-                    if (hasNotifications) {
-                        notificationsDiv.innerHTML = notificationsHTML;
-                    } else {
-                        notificationsDiv.innerHTML = '<p>No notifications at this time.</p>';
-                    }
+                if (!Array.isArray(holdsStatuses) || holdsStatuses.length === 0 || holdsStatuses[0] === -2) {
+                    notificationsDiv.innerHTML += '<p>No notifications at this time.</p>';
+                    return;
                 }
+
+                // Find the exact books the user is holding
+                const heldBooks = [];
+                allBooks.forEach(book => {
+                    if (book.holders > 0) {
+                        heldBooks.push(book);
+                    }
+                });
+
+                let hasNotifications = false;
+                let notificationsHTML = '';
+
+                holdsStatuses.forEach((status, index) => {
+                    if (status === 1) {
+                        hasNotifications = true;
+                        // Match hold status index with the correct held book
+                        const bookTitle = heldBooks[index]?.title || 'A book';
+                        notificationsHTML += `
+                    <div class="notification">
+                        <strong>Book Available!</strong> The book "<em>${bookTitle}</em>" you have on hold is now available! 🎉
+                    </div>
+                `;
+                    }
+                });
+
+                if (hasNotifications) {
+                    notificationsDiv.innerHTML += notificationsHTML;
+                } else {
+                    notificationsDiv.innerHTML += '<p>No notifications at this time.</p>';
+                }
+
             } catch (error) {
                 console.error('Notifications load error:', error);
                 document.getElementById('notificationsContent').innerHTML = '<p>Error loading notifications</p>';
             }
         }
-
         function showMessage(message, type) {
             const messageDiv = document.getElementById('message');
             messageDiv.textContent = message;

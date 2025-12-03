@@ -29,17 +29,29 @@ class User {
         const validBorrow = Validator.validateBorrow(book, this);
 
         if (validBorrow === 1) {
+            // Borrow the book
             this.borrowedBooks.push(book);
             book.setAvailability(0);
             book.calculateDueDate();
             book.removeFromHoldQueue(this.username);
+
+            // Remove from holds if present
+            const holdIndex = this.booksOnHold.indexOf(book);
+            if (holdIndex !== -1) {
+                this.booksOnHold.splice(holdIndex, 1);
+            }
+
             return 1;
         }
-        if (validBorrow === 0) {
+
+        // Place hold if allowed and not already held
+        if (validBorrow === 0 && !this.booksOnHold.includes(book)) {
             this.addBookToOnHoldBooks(book);
+            return 0;
         }
-        //def gonna need other stuff for disp later
-        return validBorrow;
+
+        // Cannot borrow or place hold
+        return -1;
     }
 
     returnBook(book) {
