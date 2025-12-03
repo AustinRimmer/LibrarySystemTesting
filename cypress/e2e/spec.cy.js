@@ -321,7 +321,7 @@ describe('Library End to End System Checking', () => {
         cy.get('#borrowedCount').should('have.text', '2');
 
         cy.get('#allBooks tbody tr').eq(2).within(() => {
-            cy.get('button').should('contain', 'Borrow').click();
+            cy.get('button').contains( 'Borrow').click();
         });
 
         //assert verifies that bobs book count increased
