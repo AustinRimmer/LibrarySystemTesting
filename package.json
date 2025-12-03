@@ -7,7 +7,7 @@
     "start": "node server.js",
     "start:dev": "nodemon server.js",
     "cypress:open": "npx cypress open",
-    "cypress:run": "npx cypress run --spec \"cypress/e2e/library.cy.js\""
+    "cypress:run": "npx cypress run --spec \"cypress/e2e/spec.cy.js\""
   },
   "dependencies": {
     "express": "^5.1.0"
